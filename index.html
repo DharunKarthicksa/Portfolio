@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dharun Karthick S — Data &amp; AI</title>
-  <meta name="description" content="Portfolio of Dharun Karthick S — Data &amp; AI professional at iLink Digital." />
+  <title>Dharun Karthick SA — Data &amp; AI Engineer</title>
+  <meta name="description" content="Portfolio of Dharun Karthick SA — Data &amp; AI Engineer at iLink Digital. Microsoft Fabric, Real-Time Intelligence, Databricks, Power BI, and AI-powered accelerators." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
@@ -64,6 +64,13 @@
     .btn-ghost { background: #fff; color: var(--navy); border: 1px solid var(--line); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
 
+    /* Hero stats */
+    .stats { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; max-width: 780px; }
+    .stat { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+    .stat .val { font-size: 1.6rem; font-weight: 800; color: var(--navy); letter-spacing: -.02em; }
+    .stat .val span { color: var(--accent); }
+    .stat .lbl { font-size: .8rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
+
     /* Sections */
     section { padding: 76px 0; }
     section:nth-of-type(even) { background: var(--bg-soft); }
@@ -89,6 +96,13 @@
     .skill-card .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tag { font-size: .85rem; font-weight: 500; color: var(--navy-2); background: var(--accent-soft); border: 1px solid #d9e4fd; padding: 5px 12px; border-radius: 999px; }
+
+    /* Certifications */
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .cert { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .cert .issuer { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+    .cert h3 { font-size: 1.02rem; margin: 6px 0 4px; }
+    .cert .date { font-size: .85rem; color: var(--muted); }
 
     /* Projects */
     .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
@@ -136,6 +150,7 @@
       <nav class="nav-links" id="navLinks">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
         <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
         <a href="#contact">Contact</a>
@@ -147,12 +162,18 @@
   <!-- HERO -->
   <section class="hero" style="background:linear-gradient(180deg,var(--bg-soft),#fff)">
     <div class="wrap">
-      <span class="eyebrow">Data &amp; AI Professional</span>
-      <h1>Dharun Karthick S</h1>
-      <p class="lede">I turn data into decisions — building machine learning models, data pipelines, and analytics that help teams work smarter. <!-- TODO: rewrite this in your own words --></p>
+      <span class="eyebrow">Data &amp; AI Engineer · iLink Digital</span>
+      <h1>Dharun Karthick SA</h1>
+      <p class="lede">I build scalable data pipelines, real-time intelligence dashboards, and AI-powered accelerators on Microsoft Fabric and Databricks — turning operational data into decisions as it happens.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#projects">View my work &rarr;</a>
         <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="val">2<span>+</span></div><div class="lbl">Years in Data &amp; AI</div></div>
+        <div class="stat"><div class="val">5</div><div class="lbl">Microsoft &amp; Databricks certifications</div></div>
+        <div class="stat"><div class="val">3</div><div class="lbl">Enterprise solutions delivered</div></div>
+        <div class="stat"><div class="val">8.6</div><div class="lbl">CGPA — B.E., Anna University</div></div>
       </div>
     </div>
   </section>
@@ -166,17 +187,18 @@
       </div>
       <div class="about-grid">
         <div>
-          <!-- TODO: Replace with your real bio -->
-          <p>I'm a data and AI professional at iLink Digital, where I focus on transforming raw data into practical, production-ready solutions. My work spans the full lifecycle — from cleaning and modeling data to deploying machine learning systems that deliver measurable value.</p>
-          <p>I enjoy the intersection of rigorous analysis and clear communication: building models that are not only accurate, but explainable and useful to the people who rely on them. I'm continually exploring new tools and techniques across the modern data and AI stack.</p>
-          <p>When I'm not working with data, I'm learning about emerging developments in AI and looking for new problems worth solving.</p>
+          <p>I'm a Data &amp; AI Engineer at iLink Digital with 2+ years of experience building scalable data pipelines and real-time analytics on Microsoft Fabric, Power BI, and Databricks. My work spans Real-Time Intelligence dashboards, Digital Twin use cases, and optimized end-to-end data workflows.</p>
+          <p>Lately I've been working where data engineering meets AI — designing ontologies and knowledge graphs, building AI-driven data agents on semantic models, and developing AI-powered accelerators with Claude that make analytics delivery dramatically faster.</p>
+          <p>I'm known for strong ownership, reliable execution, and effective cross-functional collaboration — backed by five Microsoft and Databricks certifications across data engineering and analytics.</p>
         </div>
         <aside class="facts">
           <h3>At a glance</h3>
-          <div class="fact"><span>Role</span><span>Data &amp; AI</span></div>
+          <div class="fact"><span>Role</span><span>Data &amp; AI Engineer</span></div>
           <div class="fact"><span>Company</span><span>iLink Digital</span></div>
-          <div class="fact"><span>Focus</span><span>ML &amp; Analytics</span></div>
-          <div class="fact"><span>Location</span><span>India</span></div>
+          <div class="fact"><span>Focus</span><span>Fabric · RTI · AI</span></div>
+          <div class="fact"><span>Location</span><span>Chennai, India</span></div>
+          <div class="fact"><span>Education</span><span>B.E. ECE, Anna University</span></div>
+          <div class="fact"><span>Languages</span><span>English · Tamil</span></div>
           <div class="fact"><span>Open to</span><span>Collaboration</span></div>
         </aside>
       </div>
@@ -189,32 +211,70 @@
       <div class="sec-head">
         <div class="kicker">Skills</div>
         <h2>Tools &amp; technologies</h2>
-        <p>A snapshot of the stack I work with across the data and AI lifecycle. <!-- TODO: adjust to match your real skills --></p>
+        <p>The stack I work with daily across the data engineering and AI lifecycle.</p>
       </div>
       <div class="skills-grid">
         <div class="skill-card">
           <h3><span class="dot"></span>Languages</h3>
           <div class="tags">
-            <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">R</span><span class="tag">Bash</span>
+            <span class="tag">Python</span><span class="tag">PySpark</span><span class="tag">SQL</span><span class="tag">KQL</span>
           </div>
         </div>
         <div class="skill-card">
-          <h3><span class="dot"></span>ML &amp; AI</h3>
+          <h3><span class="dot"></span>Data Engineering</h3>
           <div class="tags">
-            <span class="tag">scikit-learn</span><span class="tag">TensorFlow</span><span class="tag">PyTorch</span><span class="tag">Hugging Face</span><span class="tag">LLMs</span>
+            <span class="tag">Data Pipelines</span><span class="tag">Medallion Architecture</span><span class="tag">Real-Time Intelligence</span><span class="tag">Eventstream</span><span class="tag">Semantic Models</span>
           </div>
         </div>
         <div class="skill-card">
-          <h3><span class="dot"></span>Data &amp; Analytics</h3>
+          <h3><span class="dot"></span>Platforms &amp; Tools</h3>
           <div class="tags">
-            <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Spark</span><span class="tag">Power BI</span><span class="tag">Tableau</span>
+            <span class="tag">Microsoft Fabric</span><span class="tag">Power BI</span><span class="tag">Databricks</span><span class="tag">Neo4j</span><span class="tag">GitHub</span>
           </div>
         </div>
         <div class="skill-card">
-          <h3><span class="dot"></span>Cloud &amp; MLOps</h3>
+          <h3><span class="dot"></span>AI &amp; Semantics</h3>
           <div class="tags">
-            <span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">MLflow</span>
+            <span class="tag">Claude</span><span class="tag">AI Data Agents</span><span class="tag">Ontologies</span><span class="tag">Knowledge Graphs</span><span class="tag">Digital Twin</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Certifications</div>
+        <h2>Certified across the modern data stack</h2>
+        <p>Five industry certifications spanning data engineering, analytics, and AI-assisted development.</p>
+      </div>
+      <div class="cert-grid">
+        <div class="cert">
+          <div class="issuer">Microsoft Certified</div>
+          <h3>Fabric Analytics Engineer Associate</h3>
+          <div class="date">Jun 2025</div>
+        </div>
+        <div class="cert">
+          <div class="issuer">Microsoft Certified</div>
+          <h3>Fabric Data Engineer Associate</h3>
+          <div class="date">Sep 2025</div>
+        </div>
+        <div class="cert">
+          <div class="issuer">Microsoft Certified</div>
+          <h3>GitHub Copilot</h3>
+          <div class="date">Apr 2026</div>
+        </div>
+        <div class="cert">
+          <div class="issuer">Databricks Certified</div>
+          <h3>Data Engineer Associate</h3>
+          <div class="date">Sep 2024</div>
+        </div>
+        <div class="cert">
+          <div class="issuer">Databricks Certified</div>
+          <h3>Data Analyst Associate</h3>
+          <div class="date">May 2026</div>
         </div>
       </div>
     </div>
@@ -226,29 +286,26 @@
       <div class="sec-head">
         <div class="kicker">Projects</div>
         <h2>Selected work</h2>
-        <p>A few projects that show how I approach data and AI problems. <!-- TODO: replace with your real projects --></p>
+        <p>Enterprise platforms and accelerators I've engineered at iLink Digital.</p>
       </div>
       <div class="proj-grid">
         <article class="proj">
           <div class="num">01</div>
-          <h3>Predictive Analytics Model</h3>
-          <p>Built an end-to-end machine learning pipeline that forecasts [outcome], improving [metric] by [X]%. Covered feature engineering, model selection, and deployment. <!-- TODO --></p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">Azure</span></div>
-          <div class="links"><a href="#">Case study &rarr;</a><a href="#">Code &rarr;</a></div>
+          <h3>iWeave — Ontology &amp; Semantic Intelligence Platform</h3>
+          <p>AI-powered platform that models business domains as knowledge graphs for intelligent data discovery and contextual reasoning. I built industry-specific ontology templates using Claude and integrated the platform with Microsoft Fabric and Neo4j for seamless ontology import/export across enterprise data ecosystems.</p>
+          <div class="tags"><span class="tag">Claude</span><span class="tag">Microsoft Fabric</span><span class="tag">Neo4j</span><span class="tag">Knowledge Graphs</span></div>
         </article>
         <article class="proj">
           <div class="num">02</div>
-          <h3>NLP / LLM Application</h3>
-          <p>Developed a natural-language system that [does X] using transformer models, reducing manual effort for [task]. Included data prep, fine-tuning, and evaluation. <!-- TODO --></p>
-          <div class="tags"><span class="tag">PyTorch</span><span class="tag">Hugging Face</span><span class="tag">LLMs</span></div>
-          <div class="links"><a href="#">Case study &rarr;</a><a href="#">Code &rarr;</a></div>
+          <h3>GreenSky — Methane Leak Detection Accelerator</h3>
+          <p>Plug-and-play Oil &amp; Gas accelerator on Microsoft Fabric and Databricks that detects methane leaks by fusing industrial SCADA data with satellite plume data from Microsoft Planetary Computer. I designed the Bronze–Silver–Gold Medallion architecture and built real-time RTI dashboards with optimized KQL.</p>
+          <div class="tags"><span class="tag">Microsoft Fabric</span><span class="tag">Databricks</span><span class="tag">KQL</span><span class="tag">Medallion Architecture</span></div>
         </article>
         <article class="proj">
           <div class="num">03</div>
-          <h3>Analytics Dashboard</h3>
-          <p>Designed an interactive dashboard consolidating [data sources] to give stakeholders real-time visibility into [KPIs], enabling faster decisions. <!-- TODO --></p>
-          <div class="tags"><span class="tag">SQL</span><span class="tag">Power BI</span><span class="tag">Pandas</span></div>
-          <div class="links"><a href="#">Case study &rarr;</a><a href="#">Code &rarr;</a></div>
+          <h3>Digital Twin &amp; Real-Time Intelligence Showcases</h3>
+          <p>Presales solutions built on Microsoft Fabric — including a Digital Twin demo presented at FabCon '25 showcasing future-state architecture. I transformed Eventstream data into interactive real-time dashboards with KQL and accelerated custom dashboard delivery using Rayfin with Claude.</p>
+          <div class="tags"><span class="tag">Digital Twin</span><span class="tag">Eventstream</span><span class="tag">KQL</span><span class="tag">Rayfin</span></div>
         </article>
       </div>
     </div>
@@ -262,24 +319,23 @@
         <h2>Where I've worked</h2>
       </div>
       <div class="timeline">
-        <!-- TODO: replace with your real roles -->
         <div class="tl-item">
-          <div class="when">Present</div>
-          <h3>Data &amp; AI — [Your Title]</h3>
+          <div class="when">Jan 2024 — Present</div>
+          <h3>Data Engineer</h3>
+          <div class="org">iLink Digital · Chennai</div>
+          <p>Building AI-powered data platforms and accelerators: industry ontology templates for iWeave developed with Claude, Medallion pipelines and real-time methane-detection dashboards for GreenSky, and Fabric–Neo4j integrations — all managed with disciplined GitHub branching and version-control workflows.</p>
+        </div>
+        <div class="tl-item">
+          <div class="when">Presales · FabCon '25</div>
+          <h3>Solution Engineer</h3>
           <div class="org">iLink Digital</div>
-          <p>Delivering data and AI solutions: building models, pipelines, and analytics that support business decisions. Add 1–2 concrete achievements here.</p>
+          <p>Designed and delivered a Digital Twin demo for FabCon '25 showcasing next-generation Microsoft Fabric architecture; developed multiple Real-Time Intelligence solutions from Eventstream data and built custom Rayfin dashboards with Claude for customer demonstrations.</p>
         </div>
         <div class="tl-item">
-          <div class="when">Prior role</div>
-          <h3>[Previous Title]</h3>
-          <div class="org">[Previous Company]</div>
-          <p>Brief description of your responsibilities and impact in this role.</p>
-        </div>
-        <div class="tl-item">
-          <div class="when">Education</div>
-          <h3>[Your Degree]</h3>
-          <div class="org">[University / Institution]</div>
-          <p>Field of study, notable coursework, or achievements.</p>
+          <div class="when">2020 — 2024</div>
+          <h3>B.E. Electronics &amp; Communication Engineering</h3>
+          <div class="org">MIT Campus, Anna University · Chennai</div>
+          <p>First Class with Distinction — 8.6 CGPA. Chairman of the Electronics Engineers Association.</p>
         </div>
       </div>
     </div>
@@ -292,9 +348,9 @@
         <h2>Let's work together</h2>
         <p>I'm always open to interesting data and AI problems, collaborations, and conversations. Reach out anytime.</p>
         <div class="contact-links">
-          <a href="mailto:dharunkarthick.s@ilinklabs.com">&#9993; Email</a>
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener">in LinkedIn</a>
-          <a href="https://github.com/" target="_blank" rel="noopener">&#9733; GitHub</a>
+          <a href="mailto:sadharunkarthick@gmail.com">&#9993; Email</a>
+          <a href="https://www.linkedin.com/in/dharunkarthick" target="_blank" rel="noopener">in LinkedIn</a>
+          <a href="https://github.com/DharunKarthicksa" target="_blank" rel="noopener">&#9733; GitHub</a>
         </div>
       </div>
     </div>
@@ -302,7 +358,7 @@
 
   <footer>
     <div class="wrap">
-      &copy; <span id="year"></span> Dharun Karthick S. Built with care.
+      &copy; <span id="year"></span> Dharun Karthick SA. Built with care.
     </div>
   </footer>
 

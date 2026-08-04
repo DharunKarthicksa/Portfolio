@@ -1,6 +1,6 @@
-# Dharun Karthick S — Portfolio
+# Dharun Karthick SA — Portfolio
 
-A single-page personal portfolio site (Data & AI). Built with plain HTML, CSS, and JavaScript — no build step, no dependencies.
+A single-page personal portfolio site — Data & AI Engineer at iLink Digital (Microsoft Fabric, Real-Time Intelligence, Databricks, Power BI). Built with plain HTML, CSS, and JavaScript — no build step, no dependencies.
 
 ## Structure
 
@@ -8,14 +8,15 @@ A single-page personal portfolio site (Data & AI). Built with plain HTML, CSS, a
 
 ## Editing
 
-Open `index.html` and search for `TODO` comments to find every spot meant to be personalized:
+All content lives in `index.html`, organized by section:
 
-- Hero tagline
-- About / bio
-- Skills tags
-- Projects (titles, descriptions, tags, links)
-- Experience timeline and education
-- LinkedIn and GitHub links in the Contact section
+- Hero — name, tagline, and at-a-glance stats
+- About — bio and quick-facts card
+- Skills — tag groups for languages, data engineering, platforms, and AI
+- Certifications — Microsoft and Databricks credentials
+- Projects — iWeave, GreenSky, and Digital Twin / RTI showcases
+- Experience — roles at iLink Digital and education
+- Contact — email, LinkedIn, and GitHub links
 
 ## Running locally
 
