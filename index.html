@@ -103,6 +103,21 @@
     .cert .issuer { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
     .cert h3 { font-size: 1.02rem; margin: 6px 0 4px; }
     .cert .date { font-size: .85rem; color: var(--muted); }
+    .cert[data-cert] { cursor: pointer; transition: .18s ease; }
+    .cert[data-cert]:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(15,37,64,.12); border-color: var(--accent); }
+    .cert .view { margin-top: 10px; font-size: .85rem; font-weight: 600; color: var(--accent); }
+
+    /* Certificate modal */
+    .cert-modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .cert-modal[hidden] { display: none; }
+    .cert-backdrop { position: absolute; inset: 0; background: rgba(15,37,64,.72); backdrop-filter: blur(4px); }
+    .cert-box { position: relative; background: #fff; border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,.35); max-width: min(880px, 94vw); max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
+    .cert-box img { display: block; margin: 0 auto; max-width: 100%; max-height: calc(90vh - 60px); object-fit: contain; }
+    .cert-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 18px; border-top: 1px solid var(--line); }
+    .cert-bar .t { font-weight: 600; color: var(--navy); font-size: .95rem; }
+    .cert-bar a { font-weight: 600; font-size: .9rem; white-space: nowrap; }
+    .cert-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(15,37,64,.55); color: #fff; font-size: 1.15rem; cursor: pointer; line-height: 1; }
+    .cert-x:hover { background: rgba(15,37,64,.8); }
 
     /* Projects */
     .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
@@ -251,30 +266,35 @@
         <p>Five industry certifications spanning data engineering, analytics, and AI-assisted development.</p>
       </div>
       <div class="cert-grid">
-        <div class="cert">
+        <div class="cert" role="button" tabindex="0" data-cert="certificates/fabric-analytics-engineer-dp600.png" data-pdf="certificates/fabric-analytics-engineer-dp600.pdf">
           <div class="issuer">Microsoft Certified</div>
           <h3>Fabric Analytics Engineer Associate</h3>
           <div class="date">Jun 2025</div>
+          <div class="view">View certificate &rarr;</div>
         </div>
-        <div class="cert">
+        <div class="cert" role="button" tabindex="0" data-cert="certificates/fabric-data-engineer-dp700.png" data-pdf="certificates/fabric-data-engineer-dp700.pdf">
           <div class="issuer">Microsoft Certified</div>
           <h3>Fabric Data Engineer Associate</h3>
           <div class="date">Sep 2025</div>
+          <div class="view">View certificate &rarr;</div>
         </div>
-        <div class="cert">
+        <div class="cert" role="button" tabindex="0" data-cert="certificates/github-copilot-gh300.png" data-pdf="certificates/github-copilot-gh300.pdf">
           <div class="issuer">Microsoft Certified</div>
           <h3>GitHub Copilot</h3>
           <div class="date">Apr 2026</div>
+          <div class="view">View certificate &rarr;</div>
         </div>
-        <div class="cert">
+        <div class="cert" role="button" tabindex="0" data-cert="certificates/databricks-data-engineer.png" data-pdf="certificates/databricks-data-engineer.pdf">
           <div class="issuer">Databricks Certified</div>
           <h3>Data Engineer Associate</h3>
           <div class="date">Sep 2024</div>
+          <div class="view">View certificate &rarr;</div>
         </div>
-        <div class="cert">
+        <div class="cert" role="button" tabindex="0" data-cert="certificates/databricks-data-analyst.png" data-pdf="certificates/databricks-data-analyst.pdf">
           <div class="issuer">Databricks Certified</div>
           <h3>Data Analyst Associate</h3>
           <div class="date">May 2026</div>
+          <div class="view">View certificate &rarr;</div>
         </div>
       </div>
     </div>
@@ -362,6 +382,19 @@
     </div>
   </footer>
 
+  <!-- CERTIFICATE MODAL -->
+  <div class="cert-modal" id="certModal" hidden role="dialog" aria-modal="true" aria-label="Certificate viewer">
+    <div class="cert-backdrop" id="certBackdrop"></div>
+    <div class="cert-box">
+      <button class="cert-x" id="certClose" aria-label="Close">&times;</button>
+      <img id="certImage" src="" alt="" />
+      <div class="cert-bar">
+        <span class="t" id="certTitle"></span>
+        <a id="certPdfLink" href="" target="_blank" rel="noopener">Open PDF &rarr;</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Mobile nav toggle
     var toggle = document.getElementById('navToggle');
@@ -370,6 +403,39 @@
     links.addEventListener('click', function (e) { if (e.target.tagName === 'A') links.classList.remove('open'); });
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Certificate modal
+    var certModal = document.getElementById('certModal');
+    var certImage = document.getElementById('certImage');
+    var certTitle = document.getElementById('certTitle');
+    var certPdfLink = document.getElementById('certPdfLink');
+
+    function openCert(card) {
+      var title = card.querySelector('h3').textContent;
+      certImage.src = card.getAttribute('data-cert');
+      certImage.alt = title + ' — certificate';
+      certTitle.textContent = title;
+      certPdfLink.href = card.getAttribute('data-pdf');
+      certModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('certClose').focus();
+    }
+    function closeCert() {
+      certModal.hidden = true;
+      certImage.src = '';
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.cert[data-cert]').forEach(function (card) {
+      card.addEventListener('click', function () { openCert(card); });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCert(card); }
+      });
+    });
+    document.getElementById('certClose').addEventListener('click', closeCert);
+    document.getElementById('certBackdrop').addEventListener('click', closeCert);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !certModal.hidden) closeCert();
+    });
   </script>
 </body>
 </html>
