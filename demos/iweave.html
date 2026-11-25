@@ -1,0 +1,1934 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iWeave · Interactive Case Study</title>
+<meta name="description" content="Interactive case study of iWeave, an AI-assisted enterprise ontology platform that binds industry-standard models to live Microsoft Fabric data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@500;700&display=swap">
+<style>
+  /* Layout: a long-form case-study column; the demo sits inside it as a framed product window */
+  :root {
+    --bg: #F4F5F7;
+    --surface: #FFFFFF;
+    --sunken: #EEF0F3;
+    --ink: #15171C;
+    --ink-2: #3A3F48;
+    --muted: #5F6672;
+    --line: #E0E3E8;
+    --line-2: #C9CED6;
+    --accent: #D3263A;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #FBE7E9;
+    --ok: #137A52;
+    --ok-soft: #E1F3EA;
+    --warn: #9A5E00;
+    --warn-soft: #FBEFD8;
+    --none: #6B7280;
+    --none-soft: #EEF0F3;
+    --info: #2457B8;
+    --info-soft: #E4ECFA;
+    --d1: #2F66D0;
+    --d2: #11897A;
+    --d3: #C0670F;
+    --d4: #7449C2;
+    --code-bg: #15181E;
+    --code-line: #262B33;
+    --code-ink: #DDE1E7;
+    --code-key: #8CC2FF;
+    --code-str: #9FDB97;
+    --code-num: #F2BE68;
+    --code-kw: #FF8C9C;
+    --code-dim: #8A93A2;
+    --shadow: 0 1px 2px rgba(21, 23, 28, .06), 0 12px 32px rgba(21, 23, 28, .08);
+    --font-display: 'Roboto Slab', Georgia, 'Times New Roman', serif;
+    --font-body: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F1115;
+      --surface: #171A20;
+      --sunken: #1E2229;
+      --ink: #ECEEF2;
+      --ink-2: #C4C9D2;
+      --muted: #9AA2AF;
+      --line: #282C34;
+      --line-2: #3A3F49;
+      --accent: #F0485B;
+      --accent-ink: #18090B;
+      --accent-soft: #3A1A1F;
+      --ok: #4CC995;
+      --ok-soft: #16302A;
+      --warn: #E5B04F;
+      --warn-soft: #33291A;
+      --none: #9AA1AD;
+      --none-soft: #22262E;
+      --info: #82AAF6;
+      --info-soft: #1A2540;
+      --d1: #6E9CFF;
+      --d2: #3CC3AE;
+      --d3: #F0A050;
+      --d4: #AE8BF2;
+      --code-bg: #0B0D11;
+      --code-line: #1F242C;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 12px 32px rgba(0, 0, 0, .35);
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 16px/1.6 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skip { position: absolute; left: 16px; top: -48px; background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 6px; z-index: 10; text-decoration: none; }
+  .skip:focus { top: 12px; }
+
+  .page { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .page > section { padding-block: 40px; }
+  .page > .context { padding-top: 8px; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+  h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: -.01em; }
+  h3 { font-size: 17px; font-weight: 700; }
+  p { margin: 0; }
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  }
+  .section-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; max-width: 68ch; }
+  .section-head p { color: var(--muted); }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero { padding-block: 64px 24px; display: flex; flex-direction: column; gap: 20px; }
+  .wordmark {
+    display: flex; align-items: center; gap: 14px;
+    font-size: clamp(44px, 8vw, 76px); font-weight: 700; letter-spacing: -.02em; line-height: 1;
+  }
+  .wordmark .i { color: var(--accent); }
+  .logo { width: .78em; height: .78em; flex-shrink: 0; }
+  .lede { font-size: clamp(18px, 2.2vw, 21px); line-height: 1.5; color: var(--ink-2); max-width: 60ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 4px 0 0; padding: 0; }
+  .facts div { display: flex; align-items: baseline; gap: 8px; }
+  .facts dt { order: 2; color: var(--muted); font-size: 14px; }
+  .facts dd { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; padding: 10px 18px;
+    font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid transparent;
+    transition: transform .15s ease, background-color .15s ease, border-color .15s ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost { border-color: var(--line-2); color: var(--ink); background: var(--surface); }
+  .btn-ghost:hover { border-color: var(--ink-2); }
+
+  /* ── Context ─────────────────────────────────────── */
+  .context { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .ctx {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px;
+    display: flex; flex-direction: column; gap: 8px; min-width: 0;
+  }
+  .ctx .label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .ctx p { color: var(--ink-2); font-size: 15px; }
+  .ctx.role { border-color: var(--accent); }
+  .ctx.role .label { color: var(--accent); }
+
+  /* ── Demo window ─────────────────────────────────── */
+  .app {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .app-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+    padding: 12px 18px; border-bottom: 1px solid var(--line);
+  }
+  .app-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .app-brand .name { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+  .app-brand .name .i { color: var(--accent); }
+  .app-brand .logo { width: 20px; height: 20px; }
+  .app-onto {
+    font-size: 13px; color: var(--muted); padding-left: 10px; border-left: 1px solid var(--line);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  }
+  .app-stats { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stat {
+    font-size: 12px; color: var(--muted); background: var(--sunken); border-radius: 999px; padding: 3px 10px;
+    font-variant-numeric: tabular-nums; transition: background-color .3s ease, color .3s ease;
+  }
+  .stat b { color: var(--ink); font-weight: 700; }
+  .stat.bump { background: var(--accent-soft); color: var(--accent); }
+  .app-tabs {
+    display: flex; gap: 2px; padding: 0 10px; border-bottom: 1px solid var(--line); overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .app-tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    display: flex; align-items: center; gap: 8px; background: none; border: 0; border-bottom: 2px solid transparent;
+    padding: 12px 14px 10px; font-size: 14px; font-weight: 500; color: var(--muted); white-space: nowrap;
+  }
+  .tab .n {
+    display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%;
+    font-size: 11px; font-weight: 700; background: var(--sunken); color: var(--muted);
+  }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .tab[aria-selected="true"] .n { background: var(--accent); color: var(--accent-ink); }
+  .tab:hover { color: var(--ink); }
+  .app-body { padding: 20px; min-height: 540px; }
+  .app-foot {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px;
+    padding: 10px 18px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); background: var(--sunken);
+  }
+  .panel[hidden] { display: none; }
+  .panel { animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .panel-intro { color: var(--muted); font-size: 14px; margin-bottom: 16px; max-width: 75ch; }
+  .label-sm { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+  /* Template step */
+  .tpl-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px; }
+  .tpl-cards { display: flex; flex-direction: column; gap: 10px; }
+  .tpl-card {
+    text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; transition: border-color .15s ease, background-color .15s ease;
+  }
+  .tpl-card:hover { border-color: var(--line-2); }
+  .tpl-card[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .tpl-card .t { font-weight: 700; font-size: 15px; }
+  .tpl-card .b { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+  .badge {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 6px;
+    border: 1px solid var(--line-2); color: var(--ink-2); align-self: start; white-space: nowrap;
+  }
+  .tpl-more { font-size: 13px; color: var(--muted); padding: 4px 2px; }
+  .tpl-preview {
+    background: var(--sunken); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0;
+  }
+  .dom-block { display: flex; flex-direction: column; gap: 8px; }
+  .dom-name { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--ink-2);
+  }
+  .next-btn {
+    align-self: flex-start; background: var(--ink); color: var(--bg); border: 0; border-radius: 8px; padding: 9px 16px; font-weight: 600; font-size: 14px;
+  }
+
+  /* Customize step */
+  .cz { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; }
+  .chat { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .chat-log {
+    display: flex; flex-direction: column; gap: 10px; height: 330px; overflow-y: auto; padding: 14px;
+    background: var(--sunken); border-radius: 10px;
+  }
+  .msg { max-width: 92%; padding: 10px 13px; border-radius: 10px; font-size: 14px; line-height: 1.5; }
+  .msg.bot { background: var(--surface); border: 1px solid var(--line); align-self: flex-start; }
+  .msg.user { background: var(--ink); color: var(--bg); align-self: flex-end; }
+  .msg.err { border-color: var(--warn); }
+  .msg details { margin-top: 8px; }
+  .msg summary { font-size: 12px; color: var(--muted); cursor: pointer; }
+  .msg pre { margin: 8px 0 0; font-size: 11.5px; max-height: 180px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .suggest {
+    background: var(--surface); border: 1px dashed var(--line-2); border-radius: 999px; padding: 5px 12px; font-size: 13px; color: var(--ink-2);
+  }
+  .suggest:hover { border-style: solid; border-color: var(--accent); color: var(--accent); }
+  .suggest.used { opacity: .5; text-decoration: line-through; }
+  .chat-form { display: flex; gap: 8px; }
+  .chat-form input {
+    flex: 1; min-width: 0; border: 1px solid var(--line-2); background: var(--surface); border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  }
+  .chat-form button { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 0 16px; font-weight: 600; font-size: 14px; }
+  .hint { font-size: 12px; color: var(--muted); }
+  .hint code { font-family: var(--font-mono); font-size: 11.5px; background: var(--sunken); padding: 1px 5px; border-radius: 4px; }
+  .tree { border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; min-width: 0; max-height: 520px; }
+  .tree-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .tree-head h3 { font-size: 15px; }
+  .small-btn {
+    background: var(--surface); border: 1px solid var(--line-2); border-radius: 6px; padding: 4px 10px; font-size: 12.5px; font-weight: 500;
+  }
+  .small-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .tree-body { overflow-y: auto; padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 14px; }
+  .t-entity { padding: 8px 10px; border-radius: 8px; background: var(--sunken); display: flex; flex-direction: column; gap: 6px; transition: box-shadow .4s ease, background-color .4s ease; }
+  .t-entity .row { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; font-weight: 600; }
+  .t-entity .row span { font-weight: 400; color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .t-attrs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .t-attr { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); background: var(--surface); border-radius: 4px; padding: 1px 6px; }
+  .t-attr.key { color: var(--accent); }
+  .flash { background: var(--accent-soft) !important; box-shadow: 0 0 0 2px var(--accent); }
+
+  /* Binding step */
+  .bd { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 20px; }
+  .bd-side { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .ent-list { display: flex; flex-direction: column; gap: 4px; }
+  .ent-btn {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px; text-align: left;
+    background: none; border: 1px solid transparent; border-radius: 8px; padding: 7px 10px; font-size: 13.5px;
+  }
+  .ent-btn:hover { background: var(--sunken); }
+  .ent-btn[aria-pressed="true"] { background: var(--sunken); border-color: var(--line-2); font-weight: 600; }
+  .ent-btn .cov { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .src-card { background: var(--sunken); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+  .src-card .lh { font-family: var(--font-mono); font-size: 12px; }
+  .src-card select, .map-row select {
+    width: 100%; border: 1px solid var(--line-2); background: var(--surface); border-radius: 6px; padding: 5px 8px; font-size: 13px; font-family: var(--font-mono);
+  }
+  .bd-main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .tile { background: var(--sunken); border-radius: 8px; padding: 10px 12px; }
+  .tile .v { font-family: var(--font-display); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .tile .k { font-size: 11.5px; color: var(--muted); }
+  .tile.ok .v { color: var(--ok); }
+  .tile.warn .v { color: var(--warn); }
+  .map { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .map-row {
+    display: grid; grid-template-columns: minmax(0, 1.1fr) 20px minmax(0, 1.2fr) 130px; gap: 10px; align-items: center;
+    padding: 8px 12px; border-top: 1px solid var(--line); font-size: 13px;
+  }
+  .map-row:first-child { border-top: 0; }
+  .map-row.head { background: var(--sunken); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .map-row.enter { animation: rowIn .35s ease both; }
+  @keyframes rowIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+  .attr-name { font-family: var(--font-mono); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .attr-name .ty { color: var(--muted); font-size: 11px; margin-left: 6px; }
+  .attr-name .k { color: var(--accent); margin-right: 4px; }
+  .arrow { color: var(--muted); text-align: center; }
+  .conf { display: flex; flex-direction: column; gap: 4px; }
+  .pill { justify-self: start; align-self: flex-start; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .pill.matched { color: var(--ok); background: var(--ok-soft); }
+  .pill.partial { color: var(--warn); background: var(--warn-soft); }
+  .pill.none { color: var(--none); background: var(--none-soft); }
+  .pill.manual { color: var(--info); background: var(--info-soft); }
+  .bar { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 2px; background: currentColor; transition: width .5s ease; }
+  .ts-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .ts-card.on { border-color: var(--d2); }
+  .ts-card label.tog { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+  .ts-card p { font-size: 13px; color: var(--muted); }
+  .ts-rows { display: grid; grid-template-columns: max-content 20px minmax(0, 1fr); gap: 6px 10px; font-size: 12.5px; font-family: var(--font-mono); }
+  .ts-rows .arrow { font-family: var(--font-body); }
+  .ts-note { font-size: 13px; color: var(--muted); background: var(--sunken); border-radius: 8px; padding: 10px 12px; }
+  .code-wrap { border-radius: 10px; overflow: hidden; background: var(--code-bg); }
+  .code-head {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px;
+    border-bottom: 1px solid var(--code-line); color: var(--code-dim); font-size: 12px; font-family: var(--font-mono);
+  }
+  .code-head button {
+    background: transparent; border: 1px solid var(--code-line); color: var(--code-ink); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-family: var(--font-body);
+  }
+  .code-head button:hover { border-color: var(--code-dim); }
+  pre.code {
+    margin: 0; padding: 12px 14px; overflow: auto; max-height: 320px; color: var(--code-ink);
+    font: 12px/1.55 var(--font-mono); tab-size: 2;
+  }
+  .msg pre.code { border-radius: 8px; background: var(--code-bg); }
+  .tk-key { color: var(--code-key); }
+  .tk-str { color: var(--code-str); }
+  .tk-num { color: var(--code-num); }
+  .tk-kw { color: var(--code-kw); }
+  .tk-dim { color: var(--code-dim); }
+
+  /* Visualize step */
+  .viz { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; }
+  .viz-stage { border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .viz-tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .viz-tools label { display: flex; align-items: center; gap: 6px; }
+  .viz-tools .help { color: var(--muted); font-size: 12px; }
+  svg.graph { display: block; width: 100%; height: auto; max-width: 100%; touch-action: none; background: var(--surface); }
+  .g-edge path { fill: none; stroke: var(--line-2); stroke-width: 1.6; }
+  .g-edge.sup path { stroke: var(--muted); stroke-dasharray: 5 5; opacity: .7; }
+  .g-edge text { font-size: 11px; fill: var(--muted); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+  .g-edge.sup text { font-style: italic; }
+  .g-edge.hl path { stroke: var(--ink-2); stroke-width: 2.2; }
+  .g-edge.hl text { fill: var(--ink); }
+  .g-node { cursor: grab; }
+  .g-node:active { cursor: grabbing; }
+  .g-node circle.body { stroke: var(--surface); stroke-width: 3; }
+  .g-node circle.ring { fill: none; stroke: var(--accent); stroke-width: 2.5; opacity: 0; }
+  .g-node.sel circle.ring { opacity: 1; }
+  .g-node text.cnt { font: 700 12px var(--font-body); fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .g-node text.lbl { font: 600 12.5px var(--font-body); fill: var(--ink); text-anchor: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; pointer-events: none; }
+  .g-node:focus { outline: none; }
+  .g-node:focus-visible circle.ring { opacity: 1; stroke-dasharray: 3 3; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .viz-detail { border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .viz-detail h3 { font-size: 18px; }
+  .dom-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .attr-list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .attr-list li { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .attr-list li span:last-child { color: var(--muted); }
+  .attr-list li.key span:first-child { color: var(--accent); }
+  .rel-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--ink-2); }
+  .rel-list li.sup { color: var(--muted); font-style: italic; }
+  .rel-list b { font-weight: 600; color: var(--ink); }
+
+  /* Export step */
+  .ex { display: flex; flex-direction: column; gap: 12px; }
+  .seg { display: inline-flex; gap: 2px; background: var(--sunken); border-radius: 8px; padding: 3px; align-self: flex-start; }
+  .seg button { background: none; border: 0; border-radius: 6px; padding: 6px 14px; font-size: 13px; font-weight: 500; color: var(--muted); }
+  .seg button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0, 0, 0, .1); }
+  .ex pre.code { max-height: 380px; }
+  .targets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+
+  /* ── What I built ────────────────────────────────── */
+  .built-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  @media (min-width: 700px) {
+    .built-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .built-grid .card:first-child { grid-column: span 2; }
+  }
+  @media (min-width: 980px) {
+    .built-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px;
+    display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  }
+  .card p { color: var(--ink-2); font-size: 15px; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+  .card .tags span { font-size: 12px; color: var(--muted); background: var(--sunken); border-radius: 999px; padding: 2px 9px; }
+
+  /* ── Architecture ────────────────────────────────── */
+  .arch-grid { display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr) 36px minmax(0, 1fr); align-items: stretch; }
+  .arch-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .arch-col .label-sm { margin-bottom: 2px; }
+  .arch-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+  .arch-box b { font-size: 14.5px; }
+  .arch-box span { font-size: 13px; color: var(--muted); }
+  .arch-box.hl { border-color: var(--accent); }
+  .arch-arrow { display: grid; place-items: center; color: var(--line-2); font-size: 22px; }
+  .arch-note { margin-top: 16px; color: var(--muted); font-size: 14px; max-width: 75ch; }
+
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stack span { font-size: 13.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; color: var(--ink-2); }
+
+  footer { padding-block: 32px 56px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); margin-top: 16px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+    background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 500;
+    transition: opacity .2s ease, transform .2s ease; z-index: 20; max-width: calc(100% - 32px);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 880px) {
+    .tpl-layout, .cz, .bd, .viz { grid-template-columns: minmax(0, 1fr); }
+    .viz-detail { order: 2; }
+    .arch-grid { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .arch-arrow { transform: rotate(90deg); height: 32px; }
+    .chat-log { height: 280px; }
+  }
+  @media (max-width: 560px) {
+    .app-body { padding: 14px; }
+    .map-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 10px; }
+    .map-row .arrow { display: none; }
+    .map-row .conf { grid-column: 1 / -1; }
+    .map-row.head { display: none; }
+    .tiles { gap: 6px; }
+    .tile .v { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#demo">Skip to the interactive demo</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 40 40">
+      <circle cx="14" cy="20" r="9.5" fill="none" stroke="var(--accent)" stroke-width="4"/>
+      <circle cx="26" cy="20" r="9.5" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="44 16" stroke-dashoffset="-8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="hero">
+    <p class="eyebrow">Case study · Enterprise data &amp; AI</p>
+    <h1 class="wordmark"><svg class="logo" aria-hidden="true"><use href="#logo"/></svg><span><span class="i">i</span>Weave</span></h1>
+    <p class="lede">An AI-assisted platform for building enterprise ontologies from industry standards, then binding them to live data in Microsoft Fabric.</p>
+    <dl class="facts">
+      <div><dd>40+</dd><dt>industry templates</dt></div>
+      <div><dd>10</dd><dt>industries</dt></div>
+      <div><dd>6</dd><dt>data binding sources</dt></div>
+      <div><dd>5</dd><dt>export formats</dt></div>
+    </dl>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#demo">Try the interactive demo</a>
+      <a class="btn btn-ghost" href="#built">What I built</a>
+    </div>
+  </header>
+
+  <section class="context" aria-label="Project context">
+    <div class="ctx">
+      <span class="label">The problem</span>
+      <p>Teams describe the same business in different words. A "customer" in the BI model, the CRM and the AI agent are three different things, so numbers disagree and every new data source takes weeks of manual mapping.</p>
+    </div>
+    <div class="ctx">
+      <span class="label">What iWeave does</span>
+      <p>It starts from a curated industry template (FIBO, GS1, ISA-95, HL7 FHIR and others), lets people reshape it in plain English, binds each entity to real tables and columns, and deploys it to Microsoft Fabric, Neo4j and other graph platforms.</p>
+    </div>
+    <div class="ctx role">
+      <span class="label">My role</span>
+      <p id="roleText">Software engineer on the platform. I worked on live data binding to Microsoft Fabric, the serverless API and its security, and production debugging across the stack.</p>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="section-head">
+      <p class="eyebrow">Interactive demo</p>
+      <h2>Try the workflow</h2>
+      <p>A trimmed-down recreation of the product's five-step flow with sample data. Pick a template, change it in plain English, bind it to a sample lakehouse, explore the graph and export it. Everything runs in your browser.</p>
+    </div>
+
+    <div class="app" id="app">
+      <div class="app-bar">
+        <div class="app-brand">
+          <svg class="logo" aria-hidden="true"><use href="#logo"/></svg>
+          <span class="name"><span class="i">i</span>Weave</span>
+          <span class="app-onto" id="ontoName"></span>
+        </div>
+        <div class="app-stats" id="stats" aria-live="polite"></div>
+      </div>
+
+      <div class="app-tabs" role="tablist" aria-label="Workflow steps">
+        <button class="tab" role="tab" id="tab-template" aria-controls="panel-template" aria-selected="true"><span class="n">1</span>Template</button>
+        <button class="tab" role="tab" id="tab-customize" aria-controls="panel-customize" aria-selected="false" tabindex="-1"><span class="n">2</span>Customize</button>
+        <button class="tab" role="tab" id="tab-binding" aria-controls="panel-binding" aria-selected="false" tabindex="-1"><span class="n">3</span>Binding</button>
+        <button class="tab" role="tab" id="tab-visualize" aria-controls="panel-visualize" aria-selected="false" tabindex="-1"><span class="n">4</span>Visualize</button>
+        <button class="tab" role="tab" id="tab-export" aria-controls="panel-export" aria-selected="false" tabindex="-1"><span class="n">5</span>Export</button>
+      </div>
+
+      <div class="app-body">
+        <!-- 1. Template -->
+        <section class="panel" role="tabpanel" id="panel-template" aria-labelledby="tab-template">
+          <p class="panel-intro">Every ontology starts from an industry template grounded in a published standard. The product ships 40+; this demo includes three.</p>
+          <div class="tpl-layout">
+            <div class="tpl-cards" id="tplCards"></div>
+            <div class="tpl-preview" id="tplPreview"></div>
+          </div>
+        </section>
+
+        <!-- 2. Customize -->
+        <section class="panel" role="tabpanel" id="panel-customize" aria-labelledby="tab-customize" hidden>
+          <p class="panel-intro">Describe a change in plain English. The assistant turns it into structured actions that update the model through one state layer, so every change can be undone.</p>
+          <div class="cz">
+            <div class="chat">
+              <div class="chat-log" id="chatLog" aria-live="polite"></div>
+              <div class="chips" id="chips"></div>
+              <form class="chat-form" id="chatForm">
+                <label for="chatInput" class="sr-only">Describe a change</label>
+                <input id="chatInput" autocomplete="off" maxlength="120" placeholder="e.g. add loyalty_points to Customer">
+                <button type="submit">Apply</button>
+              </form>
+              <p class="hint">Try <code>add domain …</code>, <code>add entity … to …</code>, <code>add field to Entity</code>, <code>link A to B as label</code>, <code>remove field from Entity</code>.</p>
+            </div>
+            <div class="tree">
+              <div class="tree-head"><h3>Ontology structure</h3><button class="small-btn" id="undoBtn" disabled>Undo</button></div>
+              <div class="tree-body" id="tree"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Binding -->
+        <section class="panel" role="tabpanel" id="panel-binding" aria-labelledby="tab-binding" hidden>
+          <p class="panel-intro">Each entity is bound to a physical lakehouse table. Attributes are auto-mapped to columns with a confidence score; anything uncertain is flagged for review, and you can change any mapping. The output is the binding definition Microsoft Fabric expects.</p>
+          <div class="bd">
+            <div class="bd-side">
+              <span class="label-sm">Entity</span>
+              <div class="ent-list" id="entList"></div>
+              <span class="label-sm">Source</span>
+              <div class="src-card">
+                <span class="lh" id="lhName"></span>
+                <label class="sr-only" for="tableSel">Source table</label>
+                <select id="tableSel"></select>
+              </div>
+              <button class="small-btn" id="remapBtn">Re-run auto-map</button>
+            </div>
+            <div class="bd-main">
+              <div class="tiles" id="tiles"></div>
+              <div class="map" id="mapTable" role="table" aria-label="Attribute to column mapping"></div>
+              <div id="tsArea"></div>
+              <div class="code-wrap">
+                <div class="code-head"><span id="bindPath">Fabric data binding</span><button type="button" id="copyBind">Copy</button></div>
+                <pre class="code" id="bindJson"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Visualize -->
+        <section class="panel" role="tabpanel" id="panel-visualize" aria-labelledby="tab-visualize" hidden>
+          <div class="viz">
+            <div class="viz-stage">
+              <div class="viz-tools">
+                <label><input type="checkbox" id="histToggle"> Show history (superseded relationships)</label>
+                <span class="help">Drag nodes · click to inspect</span>
+              </div>
+              <svg class="graph" id="graph" viewBox="0 0 760 460" role="group" aria-label="Ontology graph"></svg>
+              <div class="legend" id="legend"></div>
+            </div>
+            <aside class="viz-detail" id="vizDetail" aria-live="polite"></aside>
+          </div>
+        </section>
+
+        <!-- 5. Export -->
+        <section class="panel" role="tabpanel" id="panel-export" aria-labelledby="tab-export" hidden>
+          <div class="ex">
+            <p class="panel-intro">The same model exports to formats data teams and semantic-web tools already use. Output is generated live from the model you just edited.</p>
+            <div class="seg" role="tablist" aria-label="Export format" id="fmtSeg">
+              <button role="tab" aria-selected="true" data-fmt="json">JSON</button>
+              <button role="tab" aria-selected="false" data-fmt="jsonld">JSON-LD</button>
+              <button role="tab" aria-selected="false" data-fmt="turtle">Turtle</button>
+            </div>
+            <div class="code-wrap">
+              <div class="code-head"><span id="exMeta"></span><button type="button" id="copyExport">Copy</button></div>
+              <pre class="code" id="exportCode"></pre>
+            </div>
+            <p class="targets">The full product also exports YAML and RDF/XML, deploys to Microsoft Fabric, Neo4j and Amazon Neptune, and imports from Palantir Foundry and Power BI semantic models.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="app-foot">
+        <span>Sample data · runs entirely in your browser</span>
+        <span>Recreated for a portfolio. No production code or customer data.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="built">
+    <div class="section-head">
+      <p class="eyebrow">Engineering</p>
+      <h2>What I built</h2>
+      <p>Highlights from my work on the platform.</p>
+    </div>
+    <div class="built-grid" id="builtGrid"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="eyebrow">Architecture</p>
+      <h2>How it fits together</h2>
+    </div>
+    <div class="arch-grid">
+      <div class="arch-col">
+        <span class="label-sm">Client</span>
+        <div class="arch-box hl"><b>React + Vite single-page app</b><span>Ontology state with 50-step undo, D3 graph, binding workspace</span></div>
+        <div class="arch-box"><b>MSAL / Entra ID</b><span>Delegated tokens for Fabric, SQL endpoints and Kusto clusters</span></div>
+      </div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
+      <div class="arch-col">
+        <span class="label-sm">Serverless &amp; data services</span>
+        <div class="arch-box hl"><b>Azure Functions API</b><span>One shared guard for auth, monthly quota and burst rate limits</span></div>
+        <div class="arch-box"><b>Claude API</b><span>Returns structured actions the app applies to the model</span></div>
+        <div class="arch-box"><b>Supabase</b><span>Auth, saved projects, usage metering, row-level security</span></div>
+      </div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
+      <div class="arch-col">
+        <span class="label-sm">Platforms it connects to</span>
+        <div class="arch-box hl"><b>Microsoft Fabric</b><span>Ontology REST API, Lakehouse SQL endpoint, Eventhouse (KQL), semantic models</span></div>
+        <div class="arch-box"><b>Graph databases</b><span>Neo4j, Amazon Neptune, Palantir Foundry</span></div>
+      </div>
+    </div>
+    <p class="arch-note">The API key for the language model never reaches the browser. Long-running analysis streams through a separate function app to stay under gateway timeouts, and every endpoint goes through the same authentication and rate-limit guard.</p>
+  </section>
+
+  <section aria-labelledby="stackHead">
+    <div class="section-head"><h2 id="stackHead">Stack</h2></div>
+    <div class="stack" id="stack"></div>
+  </section>
+
+  <footer>
+    This page is an independent, interactive recreation built for a portfolio. It uses illustrative sample data and contains no production code, customer data or credentials. iWeave is a product of iLink Digital.
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Edit these for your portfolio ─────────────────────────────── */
+  var PROFILE = {
+    built: [
+      {
+        title: 'Live data binding to Microsoft Fabric',
+        text: 'Read physical Lakehouse schemas through the SQL analytics endpoint and added a live Eventhouse (KQL) connector that reads Kusto schemas with per-cluster OAuth scopes. Entities bind to real tables and columns instead of hand-typed names.',
+        tags: ['Fabric REST', 'Kusto', 'MSAL', 'Azure Functions']
+      },
+      {
+        title: 'Time-series data binding',
+        text: 'Generated Fabric time-series bindings for Lakehouse and Eventhouse sources, joined back to each entity\u2019s static key, following Fabric\u2019s documented binding contract. Covered by a 31-check test suite, including entities with both sources at once.',
+        tags: ['Data modeling', 'Testing', 'Microsoft Fabric']
+      },
+      {
+        title: 'Serverless API and security',
+        text: 'Routed every serverless endpoint through one shared guard for authentication, monthly quota and burst rate limiting. Added row-level security, a content security policy, HSTS and safer token storage.',
+        tags: ['Node.js', 'Supabase', 'Postgres RLS', 'CSP']
+      },
+      {
+        title: 'Production debugging',
+        text: 'Traced an authentication failure that only hit large semantic models to session aging during long extractions combined with serverless cold starts, and delivered a ranked fix plan with file-level evidence.',
+        tags: ['Root-cause analysis', 'Azure', 'Auth']
+      },
+      {
+        title: 'Demo data for Direct Lake',
+        text: 'Built a three-division sample estate for Direct Lake semantic models with shared customers, employees and business units, and validated every foreign key before export.',
+        tags: ['Python', 'Power BI', 'Direct Lake']
+      }
+    ],
+    stack: ['React', 'Vite', 'JavaScript', 'Node.js', 'Azure Functions', 'Microsoft Fabric', 'Power BI', 'Kusto (KQL)', 'MSAL / Entra ID', 'Supabase', 'PostgreSQL', 'Claude API', 'D3.js', 'Neo4j', 'RDF / OWL / JSON-LD', 'Python']
+  };
+
+  /* DATA-START */
+  function A(name, type, key) { return { name: name, type: type || 'String', key: !!key }; }
+  function C(name, type) { return { name: name, type: type }; }
+  var relSeq = 0;
+  function R(from, to, label, card, supersededOn) {
+    relSeq += 1;
+    return { id: 'r' + relSeq, from: from, to: to, label: label, card: card, status: supersededOn ? 'superseded' : 'current', validTo: supersededOn || null };
+  }
+
+  var TEMPLATES = {
+    retail: {
+      name: 'Retail & Grocery', standard: 'GS1',
+      blurb: 'Customers, orders, stores, products and the supply chain behind them.',
+      domains: [
+        { id: 'sales', name: 'Sales & Customers', color: 1 },
+        { id: 'product', name: 'Product & Pricing', color: 2 },
+        { id: 'supply', name: 'Supply Chain', color: 3 }
+      ],
+      entities: [
+        { id: 'customer', label: 'Customer', domain: 'sales', attrs: [A('customer_id', 'String', true), A('full_name'), A('email'), A('loyalty_tier'), A('signup_date', 'Date')] },
+        { id: 'order', label: 'Order', domain: 'sales', attrs: [A('order_id', 'String', true), A('order_date', 'DateTime'), A('total_amount', 'Decimal'), A('channel')] },
+        { id: 'store', label: 'Store', domain: 'sales', attrs: [A('store_id', 'String', true), A('store_name'), A('region')] },
+        { id: 'product', label: 'Product', domain: 'product', attrs: [A('sku', 'String', true), A('product_name'), A('category'), A('unit_price', 'Decimal')] },
+        { id: 'supplier', label: 'Supplier', domain: 'supply', attrs: [A('supplier_id', 'String', true), A('supplier_name'), A('country')] },
+        { id: 'inventory', label: 'Inventory Position', domain: 'supply', attrs: [A('position_id', 'String', true), A('on_hand_qty', 'Integer'), A('reorder_point', 'Integer')] }
+      ],
+      rels: [
+        R('customer', 'order', 'places', '1:N'),
+        R('order', 'product', 'contains', 'N:M'),
+        R('order', 'store', 'fulfilled at', 'N:1'),
+        R('supplier', 'product', 'supplies', '1:N'),
+        R('inventory', 'product', 'tracks', 'N:1'),
+        R('inventory', 'store', 'held at', 'N:1'),
+        R('product', 'supplier', 'sourced from', 'N:1', '2026-02-14')
+      ],
+      source: {
+        name: 'retail_lakehouse',
+        tables: {
+          dim_customer: [C('cust_id', 'Integer'), C('customer_name', 'String'), C('email_address', 'String'), C('tier', 'String'), C('created_on', 'Date'), C('province', 'String')],
+          fact_orders: [C('order_id', 'String'), C('order_ts', 'DateTime'), C('net_amount', 'Decimal'), C('sales_channel', 'String'), C('cust_id', 'Integer'), C('store_id', 'Integer')],
+          dim_store: [C('store_id', 'Integer'), C('store_name', 'String'), C('region_name', 'String'), C('opened_on', 'Date')],
+          dim_product: [C('product_sku', 'String'), C('product_name', 'String'), C('category', 'String'), C('list_price', 'Decimal')],
+          dim_supplier: [C('supplier_id', 'Integer'), C('supplier_name', 'String'), C('country_code', 'String')],
+          fact_inventory: [C('position_id', 'Integer'), C('qty_on_hand', 'Integer'), C('reorder_level', 'Integer'), C('product_sku', 'String'), C('store_id', 'Integer')]
+        },
+        suggest: { customer: 'dim_customer', order: 'fact_orders', store: 'dim_store', product: 'dim_product', supplier: 'dim_supplier', inventory: 'fact_inventory' }
+      },
+      prompts: ['add loyalty_points to Customer', 'add domain Sustainability', 'add entity Carbon Footprint to Sustainability', 'link Carbon Footprint to Product as measures', 'remove email from Customer']
+    },
+
+    banking: {
+      name: 'Retail Banking', standard: 'FIBO',
+      blurb: 'Customers, accounts, transactions and the compliance checks around them.',
+      domains: [
+        { id: 'party', name: 'Party & Customer', color: 1 },
+        { id: 'accounts', name: 'Accounts & Products', color: 2 },
+        { id: 'risk', name: 'Risk & Compliance', color: 4 }
+      ],
+      entities: [
+        { id: 'customer', label: 'Customer', domain: 'party', attrs: [A('customer_id', 'String', true), A('legal_name'), A('segment'), A('risk_rating'), A('onboarding_date', 'Date')] },
+        { id: 'branch', label: 'Branch', domain: 'party', attrs: [A('branch_id', 'String', true), A('branch_name'), A('city')] },
+        { id: 'account', label: 'Account', domain: 'accounts', attrs: [A('account_id', 'String', true), A('account_type'), A('open_date', 'Date'), A('balance', 'Decimal'), A('status')] },
+        { id: 'transaction', label: 'Transaction', domain: 'accounts', attrs: [A('transaction_id', 'String', true), A('posted_at', 'DateTime'), A('amount', 'Decimal'), A('channel')] },
+        { id: 'kyc', label: 'KYC Review', domain: 'risk', attrs: [A('review_id', 'String', true), A('review_date', 'Date'), A('outcome'), A('next_review_date', 'Date')] },
+        { id: 'alert', label: 'AML Alert', domain: 'risk', attrs: [A('alert_id', 'String', true), A('raised_at', 'DateTime'), A('severity'), A('is_escalated', 'Boolean')] }
+      ],
+      rels: [
+        R('customer', 'account', 'holds', '1:N'),
+        R('account', 'branch', 'serviced by', 'N:1'),
+        R('account', 'transaction', 'records', '1:N'),
+        R('customer', 'kyc', 'undergoes', '1:N'),
+        R('transaction', 'alert', 'triggers', '1:N'),
+        R('alert', 'customer', 'concerns', 'N:1'),
+        R('account', 'branch', 'managed at', 'N:1', '2026-03-01')
+      ],
+      source: {
+        name: 'core_banking_lakehouse',
+        tables: {
+          dim_customer: [C('cust_no', 'String'), C('customer_name', 'String'), C('customer_segment', 'String'), C('risk_band', 'String'), C('onboarded_on', 'Date')],
+          dim_branch: [C('branch_code', 'String'), C('branch_name', 'String'), C('city', 'String')],
+          dim_account: [C('account_number', 'String'), C('product_type', 'String'), C('opened_date', 'Date'), C('current_balance', 'Decimal'), C('account_status', 'String'), C('cust_no', 'String'), C('branch_code', 'String')],
+          fact_transactions: [C('txn_id', 'String'), C('txn_posted_ts', 'DateTime'), C('txn_amount', 'Decimal'), C('channel', 'String'), C('account_number', 'String')],
+          fact_kyc_reviews: [C('review_id', 'String'), C('reviewed_on', 'Date'), C('review_outcome', 'String'), C('next_due_date', 'Date')],
+          fact_aml_alerts: [C('alert_id', 'String'), C('created_ts', 'DateTime'), C('severity_level', 'String'), C('escalated_flag', 'Boolean')]
+        },
+        suggest: { customer: 'dim_customer', branch: 'dim_branch', account: 'dim_account', transaction: 'fact_transactions', kyc: 'fact_kyc_reviews', alert: 'fact_aml_alerts' }
+      },
+      prompts: ['add credit_score to Customer', 'add entity Loan to Accounts & Products', 'link Loan to Customer as borrowed by', 'add domain Digital Channels', 'remove channel from Transaction']
+    },
+
+    manufacturing: {
+      name: 'Discrete Manufacturing', standard: 'ISA-95',
+      blurb: 'Plants, equipment, work orders, maintenance and quality, with live sensor data.',
+      domains: [
+        { id: 'assets', name: 'Assets & Equipment', color: 2 },
+        { id: 'production', name: 'Production', color: 1 },
+        { id: 'maint', name: 'Maintenance & Quality', color: 3 }
+      ],
+      entities: [
+        { id: 'plant', label: 'Plant', domain: 'assets', attrs: [A('plant_id', 'String', true), A('plant_name'), A('country')] },
+        { id: 'equipment', label: 'Equipment', domain: 'assets', attrs: [A('equipment_id', 'String', true), A('equipment_name'), A('equipment_type'), A('install_date', 'Date'), A('manufacturer')] },
+        { id: 'workorder', label: 'Work Order', domain: 'production', attrs: [A('work_order_id', 'String', true), A('product_code'), A('planned_qty', 'Integer'), A('due_date', 'Date')] },
+        { id: 'maintenance', label: 'Maintenance Event', domain: 'maint', attrs: [A('event_id', 'String', true), A('event_type'), A('downtime_minutes', 'Integer'), A('cost', 'Decimal')] },
+        { id: 'inspection', label: 'Quality Inspection', domain: 'maint', attrs: [A('inspection_id', 'String', true), A('inspected_at', 'DateTime'), A('result'), A('defect_count', 'Integer')] }
+      ],
+      rels: [
+        R('plant', 'equipment', 'operates', '1:N'),
+        R('workorder', 'equipment', 'runs on', 'N:1'),
+        R('maintenance', 'equipment', 'performed on', 'N:1'),
+        R('inspection', 'workorder', 'checks', 'N:1'),
+        R('inspection', 'maintenance', 'triggers', '1:N'),
+        R('equipment', 'plant', 'located in', 'N:1', '2026-01-20')
+      ],
+      source: {
+        name: 'plant_ops_lakehouse',
+        tables: {
+          dim_plant: [C('plant_id', 'Integer'), C('plant_name', 'String'), C('country', 'String')],
+          dim_equipment: [C('equipment_id', 'Integer'), C('asset_name', 'String'), C('asset_class', 'String'), C('installed_on', 'Date'), C('oem', 'String'), C('plant_id', 'Integer')],
+          fact_work_orders: [C('wo_number', 'String'), C('product_code', 'String'), C('qty_planned', 'Integer'), C('due_dt', 'Date')],
+          fact_maintenance_event: [C('event_id', 'Integer'), C('event_type', 'String'), C('downtime_minutes', 'Integer'), C('cost_usd', 'Decimal')],
+          fact_quality_inspection: [C('inspection_id', 'Integer'), C('inspection_ts', 'DateTime'), C('result', 'String'), C('defects', 'Integer')],
+          fact_sensor_reading: [C('reading_id', 'Integer'), C('equipment_id', 'Integer'), C('reading_timestamp', 'DateTime'), C('temperature_c', 'Double'), C('vibration_mm_s', 'Double')]
+        },
+        suggest: { plant: 'dim_plant', equipment: 'dim_equipment', workorder: 'fact_work_orders', maintenance: 'fact_maintenance_event', inspection: 'fact_quality_inspection' },
+        timeSeries: {
+          entity: 'equipment', table: 'fact_sensor_reading', timestamp: 'reading_timestamp', joinColumn: 'equipment_id',
+          props: [{ name: 'temperature', column: 'temperature_c', type: 'Double' }, { name: 'vibration', column: 'vibration_mm_s', type: 'Double' }]
+        }
+      },
+      prompts: ['add oee_percent to Equipment', 'add domain Energy', 'add entity Energy Meter to Energy', 'link Energy Meter to Equipment as monitors', 'remove manufacturer from Equipment']
+    }
+  };
+  /* DATA-END */
+
+  /* ENGINE-START */
+  // Column-matching vocabulary: abbreviations and synonyms collapse to one token.
+  var CANON = {
+    id: 'id', key: 'id', no: 'id', num: 'id', number: 'id', code: 'id', sku: 'id', nbr: 'id',
+    dt: 'date', date: 'date', on: 'date', ts: 'date', timestamp: 'date', at: 'date', time: 'date', created: 'date', posted: 'date', raised: 'date',
+    qty: 'qty', quantity: 'qty', amount: 'amount', amt: 'amount', balance: 'balance',
+    price: 'price', cost: 'cost', usd: '', c: '', s: '', mm: '', current: '', list: '', full: '', legal: '', count: '', address: '',
+    cust: 'customer', txn: 'transaction', wo: 'workorder', work: 'workorder',
+    band: 'rating', rating: 'rating', level: 'point', point: 'point',
+    class: 'type', outcome: 'result', flag: 'flag', is: 'flag',
+    oem: 'manufacturer', asset: 'equipment',
+    installed: 'install', onboarded: 'onboard', onboarding: 'onboard', opened: 'open',
+    inspected: 'inspection', reviewed: 'review', defects: 'defect'
+  };
+  function tokens(s) {
+    return String(s).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)
+      .map(function (t) { return Object.prototype.hasOwnProperty.call(CANON, t) ? CANON[t] : t; })
+      .filter(Boolean);
+  }
+  function dice(a, b) {
+    var A1 = new Set(a), B1 = new Set(b);
+    if (!A1.size || !B1.size) return 0;
+    var inter = 0;
+    A1.forEach(function (x) { if (B1.has(x)) inter += 1; });
+    return (2 * inter) / (A1.size + B1.size);
+  }
+  function bigramDice(a, b) {
+    function grams(s) {
+      s = String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
+      var m = new Map();
+      for (var i = 0; i < s.length - 1; i++) { var g = s.slice(i, i + 2); m.set(g, (m.get(g) || 0) + 1); }
+      return m;
+    }
+    var ga = grams(a), gb = grams(b), total = 0, inter = 0;
+    ga.forEach(function (v) { total += v; });
+    gb.forEach(function (v) { total += v; });
+    if (!total) return 0;
+    ga.forEach(function (v, g) { if (gb.has(g)) inter += Math.min(v, gb.get(g)); });
+    return (2 * inter) / total;
+  }
+  var FAMILY = { String: 'text', Integer: 'num', Decimal: 'num', Double: 'num', Boolean: 'bool', Date: 'time', DateTime: 'time' };
+  function compatible(a, b) { return a === 'String' || b === 'String' || FAMILY[a] === FAMILY[b]; }
+  function score(attr, col) {
+    if (attr.name.toLowerCase() === col.name.toLowerCase()) return 1;
+    var t = dice(tokens(attr.name), tokens(col.name));
+    var g = bigramDice(attr.name, col.name);
+    var s = t >= 1 ? 0.9 + 0.09 * g : 0.7 * t + 0.3 * g;
+    if (!compatible(attr.type, col.type)) s *= 0.75;
+    return Math.min(0.99, s);
+  }
+  // Greedy one-to-one assignment, highest confidence first.
+  function automap(attrs, cols) {
+    var pairs = [];
+    attrs.forEach(function (a) { cols.forEach(function (c) { pairs.push({ a: a.name, c: c.name, s: score(a, c) }); }); });
+    pairs.sort(function (x, y) { return y.s - x.s; });
+    var usedA = new Set(), usedC = new Set(), out = {};
+    pairs.forEach(function (p) {
+      if (p.s < 0.5 || usedA.has(p.a) || usedC.has(p.c)) return;
+      usedA.add(p.a); usedC.add(p.c);
+      out[p.a] = { column: p.c, score: p.s };
+    });
+    attrs.forEach(function (a) { if (!out[a.name]) out[a.name] = { column: null, score: 0 }; });
+    return out;
+  }
+  function statusOf(m) {
+    if (!m || !m.column) return 'none';
+    if (m.manual) return 'manual';
+    return m.score >= 0.8 ? 'matched' : 'partial';
+  }
+  /* ENGINE-END */
+
+  if (typeof document === 'undefined') return;
+
+  /* ── Helpers ───────────────────────────────────────────────────── */
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function $(id) { return document.getElementById(id); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function el(tag, props, kids) {
+    var n = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        var v = props[k];
+        if (v == null || v === false) return;
+        if (k === 'class') n.className = v;
+        else if (k === 'text') n.textContent = v;
+        else if (k.slice(0, 2) === 'on') n.addEventListener(k.slice(2), v);
+        else if (k === 'value' || k === 'checked' || k === 'disabled' || k === 'selected') n[k] = v;
+        else n.setAttribute(k, v === true ? '' : v);
+      });
+    }
+    (kids == null ? [] : Array.isArray(kids) ? kids : [kids]).forEach(function (c) {
+      if (c == null || c === false) return;
+      n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    return n;
+  }
+  function sel(tag, attrs) {
+    var n = document.createElementNS(SVGNS, tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
+  }
+  function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function highlightJson(src) {
+    return escapeHtml(src).replace(/("(?:\\.|[^"\\])*")(\s*:)?|\b(true|false|null)\b|-?\b\d+(?:\.\d+)?\b/g, function (m, str, colon, kw) {
+      if (str) return colon ? '<span class="tk-key">' + str + '</span>' + colon : '<span class="tk-str">' + str + '</span>';
+      if (kw) return '<span class="tk-kw">' + m + '</span>';
+      return '<span class="tk-num">' + m + '</span>';
+    });
+  }
+  function highlightTurtle(src) {
+    return escapeHtml(src).split('\n').map(function (line) {
+      if (/^\s*#/.test(line)) return '<span class="tk-dim">' + line + '</span>';
+      return line.replace(/("(?:\\.|[^"\\])*")|(&lt;[^&\s]*&gt;)|(@prefix|\ba\b)|(\b[A-Za-z][\w-]*:[\w.-]*)/g, function (m, str, iri, kw, pn) {
+        if (str) return '<span class="tk-str">' + str + '</span>';
+        if (iri) return '<span class="tk-dim">' + iri + '</span>';
+        if (kw) return '<span class="tk-kw">' + kw + '</span>';
+        return '<span class="tk-key">' + pn + '</span>';
+      });
+    }).join('\n');
+  }
+  function hash(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+    return h >>> 0;
+  }
+  function guid(seed) {
+    var hex = '';
+    for (var i = 0; i < 4; i++) hex += hash(seed + ':' + i).toString(16).padStart(8, '0');
+    return hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-4' + hex.slice(13, 16) + '-a' + hex.slice(17, 20) + '-' + hex.slice(20, 32);
+  }
+  function propId(entityId, attrName) { return String(1000000000 + (hash(entityId + '.' + attrName) % 8999999999)); }
+  function copyText(text, btn) {
+    function done() {
+      var old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = old; }, 1400);
+    }
+    function fallback() {
+      var ta = el('textarea', { style: 'position:fixed;opacity:0;top:0;left:0' });
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) { /* selection stays for manual copy */ }
+      document.body.removeChild(ta);
+      done();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+  var toastTimer = 0;
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2400);
+  }
+  function camel(s) {
+    var parts = String(s).replace(/[^A-Za-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+    return parts.map(function (p, i) { p = p.toLowerCase(); return i ? p.charAt(0).toUpperCase() + p.slice(1) : p; }).join('');
+  }
+  function pascal(s) { var c = camel(s); return c.charAt(0).toUpperCase() + c.slice(1); }
+  function snake(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40); }
+  function titleCase(s) {
+    return String(s).replace(/[^A-Za-z0-9 &\-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 40)
+      .replace(/\b([a-z])/g, function (m) { return m.toUpperCase(); });
+  }
+  function norm(s) { return String(s).toLowerCase().replace(/[^a-z0-9]/g, ''); }
+
+  /* ── State ─────────────────────────────────────────────────────── */
+  var tplKey = 'retail';
+  var onto = null;
+  var undoStack = [];
+  var bindState = null;
+  var showHistory = false;
+  var graphDirty = true;
+  var exportFmt = 'json';
+  var activeTab = 'template';
+  var autoMapAnimated = false;
+
+  function T() { return TEMPLATES[tplKey]; }
+  function entity(id) { return onto.entities.find(function (e) { return e.id === id; }); }
+  function domain(id) { return onto.domains.find(function (d) { return d.id === id; }); }
+  function currentRels() { return onto.rels.filter(function (r) { return r.status === 'current'; }); }
+  function stats() {
+    var attrs = 0;
+    onto.entities.forEach(function (e) { attrs += e.attrs.length; });
+    return { domains: onto.domains.length, entities: onto.entities.length, attributes: attrs, relationships: currentRels().length };
+  }
+
+  function loadTemplate(key, quiet) {
+    tplKey = key;
+    var t = T();
+    onto = clone({ name: t.name + ' Ontology', standard: t.standard, domains: t.domains, entities: t.entities, rels: t.rels });
+    undoStack = [];
+    bindState = { entity: onto.entities[0].id, table: {}, overrides: {}, ts: false };
+    graphDirty = true;
+    autoMapAnimated = false;
+    viz.selected = onto.entities[0].id;
+    viz.nodes = [];
+    renderTemplate();
+    resetChat();
+    renderAll();
+    if (!quiet) toast('Loaded ' + t.name + ' (' + t.standard + ')');
+  }
+
+  var lastStats = null;
+  function renderStats() {
+    var s = stats();
+    var box = $('stats');
+    box.textContent = '';
+    [['domains', 'domains'], ['entities', 'entities'], ['attributes', 'attributes'], ['relationships', 'relationships']].forEach(function (p) {
+      var changed = lastStats && lastStats[p[0]] !== s[p[0]];
+      var node = el('span', { class: 'stat' + (changed ? ' bump' : '') }, [el('b', { text: String(s[p[0]]) }), ' ' + p[1]]);
+      box.appendChild(node);
+      if (changed) setTimeout(function () { node.classList.remove('bump'); }, 900);
+    });
+    lastStats = s;
+    $('ontoName').textContent = onto.name;
+  }
+
+  function renderAll(changedEntityId) {
+    renderStats();
+    renderTree(changedEntityId);
+    renderBinding();
+    graphDirty = true;
+    if (activeTab === 'visualize') renderGraph();
+    renderExport();
+  }
+
+  /* ── 1. Template ───────────────────────────────────────────────── */
+  function renderTemplate() {
+    var cards = $('tplCards');
+    cards.textContent = '';
+    Object.keys(TEMPLATES).forEach(function (key) {
+      var t = TEMPLATES[key];
+      cards.appendChild(el('button', {
+        class: 'tpl-card', type: 'button', 'aria-pressed': key === tplKey ? 'true' : 'false',
+        onclick: function () { if (key !== tplKey) loadTemplate(key); }
+      }, [
+        el('span', { class: 't', text: t.name }),
+        el('span', { class: 'badge', text: t.standard }),
+        el('span', { class: 'b', text: t.blurb })
+      ]));
+    });
+    cards.appendChild(el('p', { class: 'tpl-more', text: 'The full library also covers capital markets, insurance, healthcare, life sciences, energy, telecom, aviation and professional services.' }));
+
+    var pv = $('tplPreview');
+    pv.textContent = '';
+    var t0 = T();
+    pv.appendChild(el('span', { class: 'label-sm', text: 'Preview · ' + t0.standard }));
+    t0.domains.forEach(function (d) {
+      var ents = t0.entities.filter(function (e) { return e.domain === d.id; });
+      pv.appendChild(el('div', { class: 'dom-block' }, [
+        el('div', { class: 'dom-name' }, [el('span', { class: 'dot', style: 'background:var(--d' + d.color + ')' }), d.name]),
+        el('div', { class: 'chip-row' }, ents.map(function (e) { return el('span', { class: 'chip', text: e.label }); }))
+      ]));
+    });
+    pv.appendChild(el('button', { class: 'next-btn', type: 'button', onclick: function () { selectTab('customize', true); }, text: 'Customize it →' }));
+  }
+
+  /* ── 2. Customize ──────────────────────────────────────────────── */
+  function botMsg(text, actionsPayload, isErr) {
+    var kids = [el('div', { text: text })];
+    if (actionsPayload) {
+      var pre = el('pre', { class: 'code' });
+      pre.innerHTML = highlightJson(JSON.stringify(actionsPayload, null, 2));
+      kids.push(el('details', null, [el('summary', { text: 'Structured action sent to the model' }), pre]));
+    }
+    pushMsg(el('div', { class: 'msg bot' + (isErr ? ' err' : '') }, kids));
+  }
+  function userMsg(text) { pushMsg(el('div', { class: 'msg user', text: text })); }
+  function pushMsg(node) {
+    var log = $('chatLog');
+    log.appendChild(node);
+    log.scrollTop = log.scrollHeight;
+  }
+  function resetChat() {
+    $('chatLog').textContent = '';
+    botMsg('Hi. Describe a change to the ' + T().name + ' ontology and I will turn it into structured actions. In the product this runs on a large language model; this demo uses a small built-in parser for the same action protocol.');
+    var chips = $('chips');
+    chips.textContent = '';
+    T().prompts.forEach(function (p) {
+      chips.appendChild(el('button', {
+        class: 'suggest', type: 'button', text: p,
+        onclick: function (ev) { ev.currentTarget.classList.add('used'); runCommand(p); }
+      }));
+    });
+    $('undoBtn').disabled = true;
+  }
+
+  function findEntity(name) {
+    var n = norm(name);
+    if (!n) return null;
+    return onto.entities.find(function (e) { return norm(e.label) === n || norm(e.id) === n; }) ||
+      onto.entities.find(function (e) { return norm(e.label).indexOf(n) === 0 || n.indexOf(norm(e.label)) === 0; }) || null;
+  }
+  function findDomain(name) {
+    var n = norm(name);
+    if (!n) return null;
+    return onto.domains.find(function (d) { return norm(d.name) === n; }) ||
+      onto.domains.find(function (d) { return norm(d.name).indexOf(n) === 0; }) || null;
+  }
+  function inferType(name) {
+    if (/(^is_|^has_|_flag$)/.test(name)) return 'Boolean';
+    if (/(_date|_on|_dt)$/.test(name)) return 'Date';
+    if (/(_at|_ts|_time|timestamp)$/.test(name)) return 'DateTime';
+    if (/(amount|price|cost|balance|revenue|value|percent|score|rate)$/.test(name)) return 'Decimal';
+    if (/(_count|_qty|quantity|_points|_minutes|_days|_hours)$/.test(name)) return 'Integer';
+    return 'String';
+  }
+  function parse(text) {
+    var t = text.trim().replace(/\s+/g, ' ').replace(/[.!]+$/, '');
+    var m;
+    if ((m = t.match(/^(?:add|create) (?:a |an |new )?domain (?:called |named )?(.+)$/i))) return { kind: 'add_domain', name: m[1] };
+    if ((m = t.match(/^(?:add|create) (?:a |an |new )?entity (?:called |named )?(.+?)(?: (?:to|in|under) (?:the )?(.+?)(?: domain)?)?$/i))) return { kind: 'add_entity', label: m[1], domain: m[2] };
+    if ((m = t.match(/^(?:link|connect|relate) (.+?) (?:to|with|and) (.+?)(?: (?:as|via) (.+))?$/i))) return { kind: 'add_relationship', from: m[1], to: m[2], label: m[3] };
+    if ((m = t.match(/^(?:remove|delete|drop) (?:the )?(?:attribute |field |column )?(.+?) from (?:the )?(.+)$/i))) return { kind: 'delete_attribute', name: m[1], entity: m[2] };
+    if ((m = t.match(/^(?:add|create) (?:an? )?(?:attribute |field |column |property )?(.+?) (?:to|on) (?:the )?(.+)$/i))) return { kind: 'add_attribute', name: m[1], entity: m[2] };
+    return null;
+  }
+  function snapshot() {
+    undoStack.push(JSON.stringify(onto));
+    if (undoStack.length > 30) undoStack.shift();
+    $('undoBtn').disabled = false;
+  }
+  function entityList() { return onto.entities.map(function (e) { return e.label; }).join(', '); }
+
+  function runCommand(text) {
+    text = String(text || '').trim().slice(0, 120);
+    if (!text) return;
+    userMsg(text);
+    var cmd = parse(text);
+    if (!cmd) {
+      botMsg('I could not turn that into an action. This demo understands: add domain …, add entity … to …, add field to Entity, link A to B as label, and remove field from Entity.', null, true);
+      return;
+    }
+    var payload, changed = null;
+
+    if (cmd.kind === 'add_domain') {
+      var dn = titleCase(cmd.name);
+      if (!dn) return botMsg('That domain name is empty after cleanup. Try letters and numbers.', null, true);
+      if (findDomain(dn) && norm(findDomain(dn).name) === norm(dn)) return botMsg('A domain called "' + dn + '" already exists.', null, true);
+      snapshot();
+      var used = onto.domains.map(function (d) { return d.color; });
+      var color = [1, 2, 3, 4].find(function (c) { return used.indexOf(c) < 0; }) || (onto.domains.length % 4) + 1;
+      onto.domains.push({ id: 'dom_' + snake(dn), name: dn, color: color });
+      payload = { action: 'add_domain', domain: { name: dn } };
+      botMsg('Added the ' + dn + ' domain. It is empty for now; add an entity to it next.', { message: 'Added domain', actions: [payload] });
+    }
+
+    else if (cmd.kind === 'add_entity') {
+      var label = titleCase(cmd.label);
+      if (!label) return botMsg('That entity name is empty after cleanup.', null, true);
+      if (findEntity(label) && norm(findEntity(label).label) === norm(label)) return botMsg('An entity called "' + label + '" already exists.', null, true);
+      var dom = cmd.domain ? findDomain(cmd.domain) : onto.domains[0];
+      if (!dom) return botMsg('I could not find a domain called "' + cmd.domain + '". Domains: ' + onto.domains.map(function (d) { return d.name; }).join(', ') + '.', null, true);
+      snapshot();
+      var id = 'ent_' + snake(label);
+      var keyName = snake(label) + '_id';
+      var attrs = [A(keyName, 'String', true), A('name')];
+      onto.entities.push({ id: id, label: label, domain: dom.id, attrs: attrs });
+      changed = id;
+      payload = { action: 'add_entity', domain: dom.name, entity: { label: label, attributes: attrs.map(function (a) { return { name: a.name, type: a.type, key: a.key }; }) } };
+      botMsg('Added ' + label + ' to ' + dom.name + ' with a key (' + keyName + ') and a name attribute.', { message: 'Added entity', actions: [payload] });
+    }
+
+    else if (cmd.kind === 'add_attribute') {
+      var ent = findEntity(cmd.entity);
+      if (!ent) return botMsg('I could not find an entity called "' + cmd.entity + '". Entities: ' + entityList() + '.', null, true);
+      var an = snake(cmd.name);
+      if (!an) return botMsg('That attribute name is empty after cleanup.', null, true);
+      if (ent.attrs.some(function (a) { return a.name === an; })) return botMsg(ent.label + ' already has ' + an + '.', null, true);
+      snapshot();
+      var ty = inferType(an);
+      ent.attrs.push(A(an, ty));
+      changed = ent.id;
+      payload = { action: 'add_attribute', entity: ent.label, attribute: { name: an, type: ty } };
+      botMsg('Added ' + an + ' (' + ty + ') to ' + ent.label + '. The type was inferred from the name.', { message: 'Added attribute', actions: [payload] });
+    }
+
+    else if (cmd.kind === 'delete_attribute') {
+      var ent2 = findEntity(cmd.entity);
+      if (!ent2) return botMsg('I could not find an entity called "' + cmd.entity + '". Entities: ' + entityList() + '.', null, true);
+      var target = snake(cmd.name);
+      var at = ent2.attrs.find(function (a) { return a.name === target; });
+      if (!at) return botMsg(ent2.label + ' has no attribute called ' + target + '. It has: ' + ent2.attrs.map(function (a) { return a.name; }).join(', ') + '.', null, true);
+      if (at.key) return botMsg(target + ' is the entity key, so it cannot be removed. Mark another attribute as the key first.', null, true);
+      snapshot();
+      ent2.attrs = ent2.attrs.filter(function (a) { return a !== at; });
+      changed = ent2.id;
+      payload = { action: 'delete_attribute', entity: ent2.label, attribute: target };
+      botMsg('Removed ' + target + ' from ' + ent2.label + '.', { message: 'Removed attribute', actions: [payload] });
+    }
+
+    else if (cmd.kind === 'add_relationship') {
+      var from = findEntity(cmd.from), to = findEntity(cmd.to);
+      if (!from || !to) return botMsg('I could not find ' + (!from ? '"' + cmd.from + '"' : '"' + cmd.to + '"') + '. Entities: ' + entityList() + '.', null, true);
+      if (from === to) return botMsg('A relationship needs two different entities.', null, true);
+      var rl = String(cmd.label || 'relates to').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().slice(0, 30) || 'relates to';
+      if (onto.rels.some(function (r) { return r.status === 'current' && r.from === from.id && r.to === to.id && r.label === rl; })) return botMsg('That relationship already exists.', null, true);
+      snapshot();
+      onto.rels.push({ id: 'r_' + Date.now(), from: from.id, to: to.id, label: rl, card: 'N:1', status: 'current', validTo: null });
+      changed = from.id;
+      payload = { action: 'add_relationship', relationship: { from: from.label, to: to.label, label: rl, cardinality: 'N:1' } };
+      botMsg('Linked ' + from.label + ' to ' + to.label + ' as "' + rl + '". See it in step 4.', { message: 'Added relationship', actions: [payload] });
+    }
+
+    renderAll(changed);
+  }
+
+  function renderTree(changedId) {
+    var box = $('tree');
+    box.textContent = '';
+    var flashNode = null;
+    onto.domains.forEach(function (d) {
+      var ents = onto.entities.filter(function (e) { return e.domain === d.id; });
+      var block = el('div', { class: 'dom-block' }, [
+        el('div', { class: 'dom-name' }, [el('span', { class: 'dot', style: 'background:var(--d' + d.color + ')' }), d.name, el('span', { class: 'label-sm', text: ' ' + ents.length })])
+      ]);
+      if (!ents.length) block.appendChild(el('span', { class: 'hint', text: 'No entities yet' }));
+      ents.forEach(function (e) {
+        var node = el('div', { class: 't-entity' }, [
+          el('div', { class: 'row' }, [e.label, el('span', { text: e.attrs.length + ' attributes' })]),
+          el('div', { class: 't-attrs' }, e.attrs.map(function (a) { return el('span', { class: 't-attr' + (a.key ? ' key' : ''), text: a.name }); }))
+        ]);
+        if (e.id === changedId) flashNode = node;
+        block.appendChild(node);
+      });
+      box.appendChild(block);
+    });
+    if (flashNode) {
+      flashNode.classList.add('flash');
+      if (activeTab === 'customize') flashNode.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' });
+      setTimeout(function () { flashNode.classList.remove('flash'); }, 1300);
+    }
+  }
+
+  /* ── 3. Binding ────────────────────────────────────────────────── */
+  function tablesOf() { return T().source.tables; }
+  function tableFor(ent) {
+    if (bindState.table[ent.id]) return bindState.table[ent.id];
+    var sug = T().source.suggest[ent.id];
+    if (sug) return sug;
+    var best = null, bestScore = -1;
+    Object.keys(tablesOf()).forEach(function (tn) {
+      var m = automap(ent.attrs, tablesOf()[tn]);
+      var s = 0;
+      Object.keys(m).forEach(function (k) { s += m[k].score; });
+      if (s > bestScore) { bestScore = s; best = tn; }
+    });
+    return best;
+  }
+  // Manual choices win; auto-map then fills the rest from the columns nobody claimed.
+  function mappingFor(ent) {
+    var table = tableFor(ent);
+    var cols = tablesOf()[table];
+    var ov = (bindState.overrides[ent.id] || {})[table] || {};
+    var attrNames = ent.attrs.map(function (a) { return a.name; });
+    var manualAttrs = Object.keys(ov).filter(function (k) { return attrNames.indexOf(k) >= 0; });
+    var claimed = manualAttrs.map(function (k) { return ov[k]; }).filter(Boolean);
+    var out = automap(
+      ent.attrs.filter(function (a) { return manualAttrs.indexOf(a.name) < 0; }),
+      cols.filter(function (c) { return claimed.indexOf(c.name) < 0; })
+    );
+    manualAttrs.forEach(function (k) {
+      out[k] = ov[k] === null ? { column: null, score: 0, manual: true } : { column: ov[k], score: 1, manual: true };
+    });
+    return out;
+  }
+  function coverage(ent) {
+    var m = mappingFor(ent), bound = 0;
+    ent.attrs.forEach(function (a) { if (m[a.name] && m[a.name].column) bound += 1; });
+    return bound + '/' + ent.attrs.length;
+  }
+
+  function renderBinding(animate) {
+    if (!entity(bindState.entity)) bindState.entity = onto.entities[0].id;
+    var ent = entity(bindState.entity);
+    var table = tableFor(ent);
+    var map = mappingFor(ent);
+    var cols = tablesOf()[table];
+
+    var list = $('entList');
+    list.textContent = '';
+    onto.entities.forEach(function (e) {
+      list.appendChild(el('button', {
+        class: 'ent-btn', type: 'button', 'aria-pressed': e.id === ent.id ? 'true' : 'false',
+        onclick: function () { bindState.entity = e.id; renderBinding(true); }
+      }, [el('span', { text: e.label }), el('span', { class: 'cov', text: coverage(e) })]));
+    });
+
+    $('lhName').textContent = T().source.name;
+    var ts = $('tableSel');
+    ts.textContent = '';
+    Object.keys(tablesOf()).forEach(function (tn) {
+      ts.appendChild(el('option', { value: tn, text: tn, selected: tn === table }));
+    });
+    ts.value = table;
+
+    var counts = { matched: 0, partial: 0, none: 0, manual: 0 };
+    ent.attrs.forEach(function (a) { counts[statusOf(map[a.name])] += 1; });
+    var tiles = $('tiles');
+    tiles.textContent = '';
+    [
+      ['ok', counts.matched + counts.manual, 'Bound with high confidence'],
+      ['warn', counts.partial, 'Need review'],
+      ['', counts.none, 'Unmapped']
+    ].forEach(function (t) {
+      tiles.appendChild(el('div', { class: 'tile ' + t[0] }, [el('div', { class: 'v', text: String(t[1]) }), el('div', { class: 'k', text: t[2] })]));
+    });
+
+    var mt = $('mapTable');
+    mt.textContent = '';
+    mt.appendChild(el('div', { class: 'map-row head', role: 'row' }, [
+      el('span', { role: 'columnheader', text: 'Attribute' }), el('span', { 'aria-hidden': 'true' }),
+      el('span', { role: 'columnheader', text: 'Column in ' + table }), el('span', { role: 'columnheader', text: 'Confidence' })
+    ]));
+    var doAnim = animate && !REDUCED;
+    ent.attrs.forEach(function (a, i) {
+      var m = map[a.name];
+      var st = statusOf(m);
+      var selId = 'col_' + ent.id + '_' + a.name;
+      var select = el('select', { id: selId, 'aria-label': 'Column for ' + a.name, onchange: function (ev) { setOverride(ent, table, a.name, ev.target.value || null); } },
+        [el('option', { value: '', text: '— not mapped —' })].concat(cols.map(function (c) {
+          return el('option', { value: c.name, text: c.name + ' · ' + c.type, selected: m && m.column === c.name });
+        })));
+      select.value = (m && m.column) || '';
+      var pct = st === 'manual' ? 100 : Math.round((m ? m.score : 0) * 100);
+      var labelTxt = st === 'matched' ? 'Matched ' + pct + '%' : st === 'partial' ? 'Review ' + pct + '%' : st === 'manual' ? 'Set by you' : 'No match';
+      var colorVar = st === 'matched' ? 'var(--ok)' : st === 'partial' ? 'var(--warn)' : st === 'manual' ? 'var(--info)' : 'var(--none)';
+      var bar = el('div', { class: 'bar', style: 'color:' + colorVar }, [el('i', { style: 'width:' + (doAnim ? 0 : pct) + '%' })]);
+      var row = el('div', { class: 'map-row' + (doAnim ? ' enter' : ''), role: 'row', style: doAnim ? 'animation-delay:' + (i * 70) + 'ms' : null }, [
+        el('span', { class: 'attr-name', role: 'cell', title: a.name }, [a.key ? el('span', { class: 'k', text: '★', 'aria-label': 'key' }) : null, a.name, el('span', { class: 'ty', text: a.type })]),
+        el('span', { class: 'arrow', 'aria-hidden': 'true', text: '→' }),
+        el('span', { role: 'cell' }, [select]),
+        el('span', { class: 'conf', role: 'cell' }, [el('span', { class: 'pill ' + st, text: labelTxt }), bar])
+      ]);
+      mt.appendChild(row);
+      if (doAnim) setTimeout(function () { bar.firstChild.style.width = pct + '%'; }, 120 + i * 70);
+    });
+
+    renderTimeSeries(ent, map);
+    renderBindingJson(ent, table, map);
+  }
+
+  function setOverride(ent, table, attrName, column) {
+    bindState.overrides[ent.id] = bindState.overrides[ent.id] || {};
+    bindState.overrides[ent.id][table] = bindState.overrides[ent.id][table] || {};
+    bindState.overrides[ent.id][table][attrName] = column;
+    renderBinding();
+    toast(column ? attrName + ' → ' + column : attrName + ' unmapped');
+  }
+
+  function renderTimeSeries(ent, map) {
+    var area = $('tsArea');
+    area.textContent = '';
+    var tsCfg = T().source.timeSeries;
+    if (!tsCfg) {
+      area.appendChild(el('p', { class: 'ts-note', text: 'Time-series binding: switch to the Discrete Manufacturing template and open Equipment to bind live sensor readings alongside static data.' }));
+      return;
+    }
+    if (tsCfg.entity !== ent.id) {
+      area.appendChild(el('p', { class: 'ts-note', text: 'Time-series binding is available on Equipment in this template, using sensor readings from ' + tsCfg.table + '.' }));
+      return;
+    }
+    var keyAttr = ent.attrs.find(function (a) { return a.key; });
+    var keyBound = keyAttr && map[keyAttr.name] && map[keyAttr.name].column;
+    var card = el('div', { class: 'ts-card' + (bindState.ts && keyBound ? ' on' : '') });
+    var cb = el('input', {
+      type: 'checkbox', id: 'tsToggle', checked: !!(bindState.ts && keyBound), disabled: !keyBound,
+      onchange: function (ev) { bindState.ts = ev.target.checked; renderBinding(); }
+    });
+    card.appendChild(el('label', { class: 'tog', for: 'tsToggle' }, [cb, 'Add time-series binding from ' + tsCfg.table]));
+    card.appendChild(el('p', { text: keyBound
+      ? 'Fabric needs a static key binding first. Readings join back to ' + ent.label + ' on ' + tsCfg.joinColumn + ', ordered by ' + tsCfg.timestamp + '.'
+      : 'Map the key attribute (' + (keyAttr ? keyAttr.name : 'key') + ') above first. Fabric only accepts time-series data on an entity with a static key binding.' }));
+    if (bindState.ts && keyBound) {
+      var rows = el('div', { class: 'ts-rows' });
+      [[tsCfg.timestamp, 'timestamp'], [tsCfg.joinColumn, keyAttr.name + ' (join key)']].concat(tsCfg.props.map(function (p) { return [p.column, p.name + ' · ' + p.type]; }))
+        .forEach(function (r) {
+          rows.appendChild(el('span', { text: r[0] }));
+          rows.appendChild(el('span', { class: 'arrow', text: '→', 'aria-hidden': 'true' }));
+          rows.appendChild(el('span', { text: r[1] }));
+        });
+      card.appendChild(rows);
+    }
+    area.appendChild(card);
+  }
+
+  function buildBindingParts(ent, table, map) {
+    var parts = [];
+    var etId = String(2000000000 + (hash('et:' + ent.id) % 7999999999));
+    var bound = ent.attrs.filter(function (a) { return map[a.name] && map[a.name].column; });
+    if (bound.length) {
+      var bid = guid('static:' + tplKey + ent.id + table);
+      parts.push({
+        path: 'EntityTypes/' + etId + '/DataBindings/' + bid + '.json',
+        payload: {
+          id: bid,
+          dataBindingConfiguration: {
+            dataBindingType: 'NonTimeSeries',
+            propertyBindings: bound.map(function (a) { return { sourceColumnName: map[a.name].column, targetPropertyId: propId(ent.id, a.name) }; }),
+            sourceTableProperties: { sourceType: 'LakehouseTable', workspaceId: '<workspace-id>', itemId: '<lakehouse-id>', sourceTableName: table, sourceSchema: 'dbo' }
+          }
+        }
+      });
+    }
+    var tsCfg = T().source.timeSeries;
+    var keyAttr = ent.attrs.find(function (a) { return a.key; });
+    if (tsCfg && tsCfg.entity === ent.id && bindState.ts && keyAttr && map[keyAttr.name] && map[keyAttr.name].column) {
+      var tid = guid('ts:' + tplKey + ent.id);
+      var pb = [{ sourceColumnName: tsCfg.timestamp, targetPropertyId: propId(ent.id, '__ts') }]
+        .concat(tsCfg.props.map(function (p) { return { sourceColumnName: p.column, targetPropertyId: propId(ent.id, p.name) }; }))
+        .concat([{ sourceColumnName: tsCfg.joinColumn, targetPropertyId: propId(ent.id, keyAttr.name) }]);
+      parts.push({
+        path: 'EntityTypes/' + etId + '/DataBindings/' + tid + '.json',
+        payload: {
+          id: tid,
+          dataBindingConfiguration: {
+            dataBindingType: 'TimeSeries',
+            timestampColumnName: tsCfg.timestamp,
+            propertyBindings: pb,
+            sourceTableProperties: { sourceType: 'LakehouseTable', workspaceId: '<workspace-id>', itemId: '<lakehouse-id>', sourceTableName: tsCfg.table, sourceSchema: 'dbo' }
+          }
+        }
+      });
+    }
+    return parts;
+  }
+
+  var lastBindingText = '';
+  function renderBindingJson(ent, table, map) {
+    var parts = buildBindingParts(ent, table, map);
+    $('bindPath').textContent = parts.length + ' binding part' + (parts.length === 1 ? '' : 's') + ' · ' + ent.label;
+    lastBindingText = parts.length
+      ? JSON.stringify(parts.map(function (p) { return { path: p.path, payload: p.payload }; }), null, 2)
+      : '// Map at least one attribute to generate a binding.';
+    $('bindJson').innerHTML = highlightJson(lastBindingText);
+  }
+
+  /* ── 4. Visualize ──────────────────────────────────────────────── */
+  var W = 760, H = 460, NR = 24;
+  var viz = { nodes: [], edges: [], raf: 0, alpha: 0, selected: null, drag: null, mode: '' };
+
+  // Landscape canvas on wide screens, portrait on phones so labels stay readable.
+  function fitViewport() {
+    var svg = $('graph');
+    var width = svg.getBoundingClientRect().width;
+    if (!width) return;
+    var mode = width < 560 ? 'tall' : 'wide';
+    if (mode === viz.mode) return;
+    viz.mode = mode;
+    W = mode === 'tall' ? 420 : 760;
+    H = mode === 'tall' ? 560 : 460;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    viz.nodes = [];
+  }
+
+  function buildGraphModel() {
+    var prev = new Map(viz.nodes.map(function (n) { return [n.id, n]; }));
+    var n = onto.entities.length;
+    viz.nodes = onto.entities.map(function (e, i) {
+      var p = prev.get(e.id);
+      if (p) { p.entity = e; return p; }
+      var ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      return { id: e.id, entity: e, x: W / 2 + Math.cos(ang) * W * 0.28, y: H / 2 + Math.sin(ang) * H * 0.3, vx: 0, vy: 0, fixed: false };
+    });
+    var ids = new Set(viz.nodes.map(function (x) { return x.id; }));
+    var rels = onto.rels.filter(function (r) { return (showHistory || r.status === 'current') && ids.has(r.from) && ids.has(r.to); });
+    var groups = {};
+    rels.forEach(function (r) {
+      var k = [r.from, r.to].sort().join('|');
+      (groups[k] = groups[k] || []).push(r);
+    });
+    viz.edges = rels.map(function (r) {
+      var k = [r.from, r.to].sort().join('|');
+      var g = groups[k];
+      return { rel: r, idx: g.indexOf(r), count: g.length, canonFrom: k.split('|')[0] };
+    });
+    if (!entity(viz.selected)) viz.selected = onto.entities[0].id;
+  }
+
+  function nodeById(id) { return viz.nodes.find(function (n) { return n.id === id; }); }
+
+  function tick() {
+    var nodes = viz.nodes, i, j, a, b, dx, dy, d2, d, f;
+    var tall = viz.mode === 'tall';
+    var rest = tall ? 150 : 185;
+    for (i = 0; i < nodes.length; i++) {
+      for (j = i + 1; j < nodes.length; j++) {
+        a = nodes[i]; b = nodes[j];
+        dx = b.x - a.x; dy = b.y - a.y;
+        d2 = dx * dx + dy * dy || 0.01;
+        d = Math.sqrt(d2);
+        f = Math.min(20000 / d2, 9);
+        a.vx -= (dx / d) * f; a.vy -= (dy / d) * f;
+        b.vx += (dx / d) * f; b.vy += (dy / d) * f;
+      }
+    }
+    viz.edges.forEach(function (e) {
+      if (e.idx > 0) return;
+      a = nodeById(e.rel.from); b = nodeById(e.rel.to);
+      dx = b.x - a.x; dy = b.y - a.y;
+      d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+      f = (d - (e.count > 1 ? rest + 30 : rest)) * 0.018;
+      a.vx += (dx / d) * f; a.vy += (dy / d) * f;
+      b.vx -= (dx / d) * f; b.vy -= (dy / d) * f;
+    });
+    nodes.forEach(function (n) {
+      n.vx += (W / 2 - n.x) * (tall ? 0.012 : 0.006);
+      n.vy += (H / 2 - n.y) * (tall ? 0.005 : 0.008);
+      if (n.fixed) { n.vx = 0; n.vy = 0; return; }
+      n.vx *= 0.82; n.vy *= 0.82;
+      n.x += n.vx * viz.alpha; n.y += n.vy * viz.alpha;
+      n.x = Math.max(NR + 50, Math.min(W - NR - 50, n.x));
+      n.y = Math.max(NR + 16, Math.min(H - NR - 30, n.y));
+    });
+  }
+
+  function edgeGeometry(e) {
+    var a = nodeById(e.rel.from), b = nodeById(e.rel.to);
+    var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    var cf = nodeById(e.canonFrom), ct = cf === a ? b : a;
+    var px = -(ct.y - cf.y), py = ct.x - cf.x;
+    var pl = Math.sqrt(px * px + py * py) || 1;
+    var off = e.count > 1 ? (e.idx - (e.count - 1) / 2) * 64 : 0;
+    var cx = mx + (px / pl) * off, cy = my + (py / pl) * off;
+    function toward(p, q, r) { var dx = q.x - p.x, dy = q.y - p.y, l = Math.sqrt(dx * dx + dy * dy) || 1; return { x: p.x + (dx / l) * r, y: p.y + (dy / l) * r }; }
+    var c = { x: cx, y: cy };
+    var s = toward(a, c, NR + 2), t = toward(b, c, NR + 7);
+    // Labels of parallel edges are also stacked vertically so long labels never overlap.
+    var stack = e.count > 1 ? (e.idx - (e.count - 1) / 2) * 24 : 0;
+    return {
+      d: 'M' + s.x.toFixed(1) + ' ' + s.y.toFixed(1) + ' Q' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + t.x.toFixed(1) + ' ' + t.y.toFixed(1),
+      lx: 0.25 * a.x + 0.5 * cx + 0.25 * b.x,
+      ly: 0.25 * a.y + 0.5 * cy + 0.25 * b.y + stack
+    };
+  }
+
+  function drawGraph() {
+    var svg = $('graph');
+    svg.textContent = '';
+    var defs = sel('defs');
+    [['arr', 'var(--line-2)'], ['arrSup', 'var(--muted)'], ['arrHl', 'var(--ink-2)']].forEach(function (m) {
+      var mk = sel('marker', { id: m[0], viewBox: '0 0 10 10', refX: '8', refY: '5', markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse' });
+      var p = sel('path', { d: 'M0 0 L10 5 L0 10 z' });
+      p.style.fill = m[1];
+      mk.appendChild(p);
+      defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+
+    var eg = sel('g');
+    viz.edges.forEach(function (e) {
+      var g = sel('g', { class: 'g-edge' + (e.rel.status === 'superseded' ? ' sup' : '') });
+      var path = sel('path', { 'marker-end': 'url(#' + (e.rel.status === 'superseded' ? 'arrSup' : 'arr') + ')' });
+      var txt = sel('text', { 'text-anchor': 'middle', dy: '-4' });
+      txt.textContent = e.rel.label + (e.rel.status === 'superseded' ? ' (until ' + e.rel.validTo + ')' : '');
+      g.appendChild(path); g.appendChild(txt);
+      e.g = g; e.path = path; e.text = txt;
+      eg.appendChild(g);
+    });
+    svg.appendChild(eg);
+
+    var ng = sel('g');
+    viz.nodes.forEach(function (n) {
+      var d = domain(n.entity.domain);
+      var g = sel('g', { class: 'g-node', tabindex: '0', role: 'button', 'aria-label': n.entity.label + ', ' + n.entity.attrs.length + ' attributes' });
+      var ring = sel('circle', { class: 'ring', r: String(NR + 5) });
+      var body = sel('circle', { class: 'body', r: String(NR) });
+      body.style.fill = 'var(--d' + (d ? d.color : 1) + ')';
+      var cnt = sel('text', { class: 'cnt' });
+      cnt.textContent = String(n.entity.attrs.length);
+      var lbl = sel('text', { class: 'lbl', y: String(NR + 17) });
+      lbl.textContent = n.entity.label;
+      g.appendChild(ring); g.appendChild(body); g.appendChild(cnt); g.appendChild(lbl);
+      n.g = g;
+      bindNodeEvents(n);
+      ng.appendChild(g);
+    });
+    svg.appendChild(ng);
+    positionGraph();
+    paintSelection();
+  }
+
+  function positionGraph() {
+    viz.edges.forEach(function (e) {
+      var geo = edgeGeometry(e);
+      e.path.setAttribute('d', geo.d);
+      e.text.setAttribute('x', geo.lx.toFixed(1));
+      e.text.setAttribute('y', geo.ly.toFixed(1));
+    });
+    viz.nodes.forEach(function (n) { n.g.setAttribute('transform', 'translate(' + n.x.toFixed(1) + ' ' + n.y.toFixed(1) + ')'); });
+  }
+
+  function svgPoint(evt) {
+    var svg = $('graph');
+    var pt = svg.createSVGPoint();
+    pt.x = evt.clientX; pt.y = evt.clientY;
+    var m = svg.getScreenCTM();
+    return m ? pt.matrixTransform(m.inverse()) : { x: 0, y: 0 };
+  }
+
+  function bindNodeEvents(n) {
+    var start = null;
+    n.g.addEventListener('pointerdown', function (ev) {
+      ev.preventDefault();
+      n.g.setPointerCapture(ev.pointerId);
+      start = { x: ev.clientX, y: ev.clientY, moved: false };
+      viz.drag = n;
+      n.fixed = true;
+    });
+    n.g.addEventListener('pointermove', function (ev) {
+      if (viz.drag !== n || !start) return;
+      if (Math.abs(ev.clientX - start.x) + Math.abs(ev.clientY - start.y) > 4) start.moved = true;
+      if (!start.moved) return;
+      var p = svgPoint(ev);
+      n.x = Math.max(NR + 50, Math.min(W - NR - 50, p.x));
+      n.y = Math.max(NR + 16, Math.min(H - NR - 30, p.y));
+      reheat(0.35);
+    });
+    function end(ev) {
+      if (viz.drag !== n) return;
+      viz.drag = null;
+      n.fixed = false;
+      if (start && !start.moved) selectNode(n.id);
+      start = null;
+      try { n.g.releasePointerCapture(ev.pointerId); } catch (e) { /* already released */ }
+    }
+    n.g.addEventListener('pointerup', end);
+    n.g.addEventListener('pointercancel', end);
+    n.g.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectNode(n.id); }
+    });
+  }
+
+  function reheat(level) {
+    viz.alpha = Math.max(viz.alpha, level);
+    if (REDUCED) { for (var i = 0; i < 60; i++) tick(); positionGraph(); return; }
+    if (!viz.raf) viz.raf = requestAnimationFrame(loop);
+  }
+  function loop() {
+    tick();
+    positionGraph();
+    viz.alpha *= 0.975;
+    if (viz.alpha > 0.03 || viz.drag) viz.raf = requestAnimationFrame(loop);
+    else viz.raf = 0;
+  }
+
+  function selectNode(id) {
+    viz.selected = id;
+    paintSelection();
+    renderDetail();
+  }
+  function paintSelection() {
+    viz.nodes.forEach(function (n) { n.g.classList.toggle('sel', n.id === viz.selected); });
+    viz.edges.forEach(function (e) { e.g.classList.toggle('hl', e.rel.from === viz.selected || e.rel.to === viz.selected); });
+  }
+
+  function renderDetail() {
+    var box = $('vizDetail');
+    box.textContent = '';
+    var e = entity(viz.selected);
+    if (!e) return;
+    var d = domain(e.domain);
+    box.appendChild(el('div', null, [
+      el('h3', { text: e.label }),
+      el('span', { class: 'dom-tag' }, [el('span', { class: 'dot', style: 'background:var(--d' + (d ? d.color : 1) + ')' }), d ? d.name : ''])
+    ]));
+    box.appendChild(el('span', { class: 'label-sm', text: 'Attributes' }));
+    box.appendChild(el('ul', { class: 'attr-list' }, e.attrs.map(function (a) {
+      return el('li', { class: a.key ? 'key' : '' }, [el('span', { text: (a.key ? '★ ' : '') + a.name }), el('span', { text: a.type })]);
+    })));
+    var rels = onto.rels.filter(function (r) { return (r.from === e.id || r.to === e.id) && (showHistory || r.status === 'current'); });
+    box.appendChild(el('span', { class: 'label-sm', text: 'Relationships' }));
+    if (!rels.length) box.appendChild(el('p', { class: 'hint', text: 'None yet. Link it in step 2.' }));
+    box.appendChild(el('ul', { class: 'rel-list' }, rels.map(function (r) {
+      var other = entity(r.from === e.id ? r.to : r.from);
+      var sup = r.status === 'superseded';
+      var kids = r.from === e.id
+        ? [r.label + ' ', el('b', { text: other ? other.label : '?' })]
+        : [el('b', { text: other ? other.label : '?' }), ' ' + r.label + ' this'];
+      if (sup) kids.push(' · superseded ' + r.validTo);
+      else kids.push(' · ' + r.card);
+      return el('li', { class: sup ? 'sup' : '' }, kids);
+    })));
+  }
+
+  function renderLegend() {
+    var lg = $('legend');
+    lg.textContent = '';
+    onto.domains.forEach(function (d) {
+      lg.appendChild(el('span', null, [el('span', { class: 'dot', style: 'background:var(--d' + d.color + ')' }), d.name]));
+    });
+    lg.appendChild(el('span', { text: 'Number = attribute count' }));
+  }
+
+  function renderGraph() {
+    if (!graphDirty) return;
+    graphDirty = false;
+    fitViewport();
+    var fresh = !viz.nodes.length;
+    buildGraphModel();
+    drawGraph();
+    renderLegend();
+    renderDetail();
+    if (fresh || REDUCED) {
+      viz.alpha = 1;
+      for (var i = 0; i < (REDUCED ? 320 : 40); i++) { tick(); viz.alpha *= 0.99; }
+      positionGraph();
+    }
+    reheat(fresh ? 0.9 : 0.5);
+  }
+
+  /* ── 5. Export ─────────────────────────────────────────────────── */
+  var XSD = { String: 'xsd:string', Integer: 'xsd:integer', Decimal: 'xsd:decimal', Double: 'xsd:double', Boolean: 'xsd:boolean', Date: 'xsd:date', DateTime: 'xsd:dateTime' };
+  function baseIri() { return 'https://example.org/ontology/' + tplKey + '#'; }
+  function relName(r) { return pascal(entity(r.from).label) + '_' + camel(r.label) + '_' + pascal(entity(r.to).label); }
+
+  function exportJson() {
+    return JSON.stringify({
+      name: onto.name,
+      standard: onto.standard,
+      domains: onto.domains.map(function (d) {
+        return {
+          name: d.name,
+          entities: onto.entities.filter(function (e) { return e.domain === d.id; }).map(function (e) {
+            return { label: e.label, attributes: e.attrs.map(function (a) { var o = { name: a.name, type: a.type }; if (a.key) o.key = true; return o; }) };
+          })
+        };
+      }),
+      relationships: currentRels().map(function (r) {
+        return { from: entity(r.from).label, to: entity(r.to).label, label: r.label, cardinality: r.card };
+      })
+    }, null, 2);
+  }
+
+  function exportJsonLd() {
+    var graph = [{ '@id': 'ex:', '@type': 'owl:Ontology', 'rdfs:label': onto.name }];
+    onto.entities.forEach(function (e) {
+      var d = domain(e.domain);
+      graph.push({ '@id': 'ex:' + pascal(e.label), '@type': 'owl:Class', 'rdfs:label': e.label, 'rdfs:comment': 'Domain: ' + (d ? d.name : '') });
+      e.attrs.forEach(function (a) {
+        graph.push({ '@id': 'ex:' + pascal(e.label) + '_' + camel(a.name), '@type': 'owl:DatatypeProperty', 'rdfs:label': a.name, 'rdfs:domain': { '@id': 'ex:' + pascal(e.label) }, 'rdfs:range': { '@id': XSD[a.type] } });
+      });
+    });
+    currentRels().forEach(function (r) {
+      graph.push({ '@id': 'ex:' + relName(r), '@type': 'owl:ObjectProperty', 'rdfs:label': r.label, 'rdfs:domain': { '@id': 'ex:' + pascal(entity(r.from).label) }, 'rdfs:range': { '@id': 'ex:' + pascal(entity(r.to).label) } });
+    });
+    return JSON.stringify({
+      '@context': { ex: baseIri(), owl: 'http://www.w3.org/2002/07/owl#', rdfs: 'http://www.w3.org/2000/01/rdf-schema#', xsd: 'http://www.w3.org/2001/XMLSchema#' },
+      '@graph': graph
+    }, null, 2);
+  }
+
+  function lit(s) { return '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"'; }
+  function exportTurtle() {
+    var out = [
+      '@prefix ex: <' + baseIri() + '> .',
+      '@prefix owl: <http://www.w3.org/2002/07/owl#> .',
+      '@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .',
+      '@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .',
+      '',
+      'ex: a owl:Ontology ; rdfs:label ' + lit(onto.name) + ' .',
+      ''
+    ];
+    onto.domains.forEach(function (d) {
+      var ents = onto.entities.filter(function (e) { return e.domain === d.id; });
+      if (!ents.length) return;
+      out.push('# ' + d.name);
+      ents.forEach(function (e) {
+        var c = 'ex:' + pascal(e.label);
+        out.push(c + ' a owl:Class ; rdfs:label ' + lit(e.label) + ' .');
+        e.attrs.forEach(function (a) {
+          out.push(c + '_' + camel(a.name) + ' a owl:DatatypeProperty ; rdfs:domain ' + c + ' ; rdfs:range ' + XSD[a.type] + ' .');
+        });
+        out.push('');
+      });
+    });
+    var rels = currentRels();
+    if (rels.length) {
+      out.push('# Relationships');
+      rels.forEach(function (r) {
+        out.push('ex:' + relName(r) + ' a owl:ObjectProperty ; rdfs:label ' + lit(r.label) + ' ; rdfs:domain ex:' + pascal(entity(r.from).label) + ' ; rdfs:range ex:' + pascal(entity(r.to).label) + ' .');
+      });
+    }
+    return out.join('\n');
+  }
+
+  var lastExport = '';
+  function renderExport() {
+    var text = exportFmt === 'json' ? exportJson() : exportFmt === 'jsonld' ? exportJsonLd() : exportTurtle();
+    lastExport = text;
+    $('exportCode').innerHTML = exportFmt === 'turtle' ? highlightTurtle(text) : highlightJson(text);
+    var lines = text.split('\n').length;
+    var kb = (new Blob([text]).size / 1024).toFixed(1);
+    var name = { json: 'ontology.json', jsonld: 'ontology.jsonld', turtle: 'ontology.ttl' }[exportFmt];
+    $('exMeta').textContent = name + ' · ' + lines + ' lines · ' + kb + ' KB';
+  }
+
+  /* ── Tabs ──────────────────────────────────────────────────────── */
+  var TABS = ['template', 'customize', 'binding', 'visualize', 'export'];
+  function selectTab(name, focusPanel) {
+    activeTab = name;
+    TABS.forEach(function (t) {
+      var tab = $('tab-' + t), panel = $('panel-' + t), on = t === name;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+      panel.hidden = !on;
+    });
+    $('tab-' + name).scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (name === 'visualize') renderGraph();
+    if (name === 'binding' && !autoMapAnimated) { autoMapAnimated = true; renderBinding(true); }
+    if (focusPanel) $('tab-' + name).focus();
+  }
+
+  function init() {
+    TABS.forEach(function (t, i) {
+      var tab = $('tab-' + t);
+      tab.addEventListener('click', function () { selectTab(t); });
+      tab.addEventListener('keydown', function (ev) {
+        var k = ev.key, ni = -1;
+        if (k === 'ArrowRight') ni = (i + 1) % TABS.length;
+        else if (k === 'ArrowLeft') ni = (i - 1 + TABS.length) % TABS.length;
+        else if (k === 'Home') ni = 0;
+        else if (k === 'End') ni = TABS.length - 1;
+        if (ni >= 0) { ev.preventDefault(); selectTab(TABS[ni], true); }
+      });
+    });
+
+    $('chatForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var inp = $('chatInput');
+      runCommand(inp.value);
+      inp.value = '';
+    });
+    $('undoBtn').addEventListener('click', function () {
+      if (!undoStack.length) return;
+      onto = JSON.parse(undoStack.pop());
+      $('undoBtn').disabled = !undoStack.length;
+      botMsg('Undid the last change.');
+      renderAll();
+    });
+
+    $('tableSel').addEventListener('change', function (ev) {
+      bindState.table[bindState.entity] = ev.target.value;
+      renderBinding(true);
+    });
+    $('remapBtn').addEventListener('click', function () {
+      delete bindState.overrides[bindState.entity];
+      renderBinding(true);
+      toast('Auto-map re-run for ' + entity(bindState.entity).label);
+    });
+    $('copyBind').addEventListener('click', function (ev) { copyText(lastBindingText, ev.currentTarget); });
+
+    $('histToggle').addEventListener('change', function (ev) {
+      showHistory = ev.target.checked;
+      graphDirty = true;
+      renderGraph();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('#fmtSeg button'), function (b) {
+      b.addEventListener('click', function () {
+        exportFmt = b.getAttribute('data-fmt');
+        Array.prototype.forEach.call(document.querySelectorAll('#fmtSeg button'), function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+        renderExport();
+      });
+    });
+    $('copyExport').addEventListener('click', function (ev) { copyText(lastExport, ev.currentTarget); });
+
+    var grid = $('builtGrid');
+    PROFILE.built.forEach(function (b) {
+      grid.appendChild(el('article', { class: 'card' }, [
+        el('h3', { text: b.title }),
+        el('p', { text: b.text }),
+        el('div', { class: 'tags' }, b.tags.map(function (t) { return el('span', { text: t }); }))
+      ]));
+    });
+    var stack = $('stack');
+    PROFILE.stack.forEach(function (s) { stack.appendChild(el('span', { text: s })); });
+
+    var resizeTimer = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (activeTab !== 'visualize') { graphDirty = true; return; }
+        var before = viz.mode;
+        fitViewport();
+        if (viz.mode !== before) { graphDirty = true; renderGraph(); }
+      }, 200);
+    });
+
+    loadTemplate('retail', true);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

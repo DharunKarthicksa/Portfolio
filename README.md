@@ -14,7 +14,7 @@ All content lives in `index.html`, organized by section:
 - About — bio and quick-facts card
 - Skills — tag groups for languages, data engineering, platforms, and AI
 - Certifications — Microsoft and Databricks credentials
-- Projects — Capacity Insights (with live demo), iWeave, GreenSky, and Digital Twin / RTI showcases
+- Projects — Capacity Insights and iWeave (with live demos), GreenSky, and Digital Twin / RTI showcases
 - Experience — roles at iLink Digital and education
 - Contact — email, LinkedIn, and GitHub links
 
