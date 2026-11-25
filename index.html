@@ -90,7 +90,7 @@
     .fact span:last-child { color: var(--navy); font-weight: 600; text-align: right; }
 
     /* Skills */
-    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 20px; }
     .skill-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
     .skill-card h3 { font-size: 1.05rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
     .skill-card .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
@@ -98,7 +98,7 @@
     .tag { font-size: .85rem; font-weight: 500; color: var(--navy-2); background: var(--accent-soft); border: 1px solid #d9e4fd; padding: 5px 12px; border-radius: 999px; }
 
     /* Certifications */
-    .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 20px; }
     .cert { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
     .cert .issuer { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
     .cert h3 { font-size: 1.02rem; margin: 6px 0 4px; }
@@ -120,14 +120,39 @@
     .cert-x:hover { background: rgba(15,37,64,.8); }
 
     /* Projects */
-    .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px; }
     .proj { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: .18s ease; }
     .proj:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(15,37,64,.12); }
     .proj .num { font-family: 'Source Serif 4', serif; font-size: 1.4rem; color: var(--accent); font-weight: 600; }
     .proj h3 { font-size: 1.2rem; margin: 10px 0 10px; }
     .proj p { color: var(--muted); font-size: .96rem; flex: 1; margin-bottom: 16px; }
     .proj .tags { margin-bottom: 16px; }
-    .proj .links { display: flex; gap: 16px; font-size: .9rem; font-weight: 600; }
+    .proj .links { display: flex; gap: 16px; font-size: .9rem; font-weight: 600; align-items: center; flex-wrap: wrap; }
+
+    /* Featured project with live demo */
+    .proj.featured { grid-column: 1 / -1; display: grid; grid-template-columns: 1.35fr 1fr; gap: 36px; border-color: #c9d8fb; }
+    .proj.featured > div { display: flex; flex-direction: column; }
+    .proj.featured p { flex: none; }
+    .badge { display: inline-block; margin-left: 10px; vertical-align: middle; font-family: 'Inter', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 3px 10px; border-radius: 999px; }
+    .highlights { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; align-self: start; }
+    .highlights h4 { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .highlights ul { list-style: none; }
+    .highlights li { position: relative; padding-left: 18px; font-size: .93rem; margin-bottom: 10px; color: var(--slate); }
+    .highlights li:last-child { margin-bottom: 0; }
+    .highlights li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .btn-demo { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: 0; border-radius: 9px; padding: 10px 18px; font: inherit; font-weight: 600; cursor: pointer; transition: .18s ease; }
+    .btn-demo:hover { background: #1741c0; transform: translateY(-1px); }
+
+    /* Demo modal */
+    .demo-modal { position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .demo-modal[hidden] { display: none; }
+    .demo-box { position: relative; width: min(1320px, 100%); height: min(880px, 100%); background: #fff; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 64px rgba(0,0,0,.35); }
+    .demo-bar { display: flex; align-items: center; gap: 16px; padding: 10px 14px 10px 20px; border-bottom: 1px solid var(--line); }
+    .demo-bar .t { flex: 1; min-width: 0; font-weight: 600; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .demo-bar a { font-weight: 600; font-size: .9rem; white-space: nowrap; }
+    .demo-x { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--navy); font-size: 1.15rem; line-height: 1; cursor: pointer; }
+    .demo-x:hover { border-color: var(--accent); color: var(--accent); }
+    .demo-box iframe { flex: 1; width: 100%; border: 0; display: block; background: #FAF6EF; }
 
     /* Experience timeline */
     .timeline { border-left: 2px solid var(--line); margin-left: 8px; }
@@ -155,6 +180,9 @@
       .nav-links a { padding: 14px 24px; border-top: 1px solid var(--line); }
       .nav-toggle { display: block; }
       .about-grid { grid-template-columns: 1fr; }
+      .proj.featured { grid-template-columns: 1fr; gap: 20px; }
+      .demo-modal { padding: 0; }
+      .demo-box { width: 100%; height: 100%; border-radius: 0; }
     }
   </style>
 </head>
@@ -187,7 +215,7 @@
       <div class="stats">
         <div class="stat"><div class="val">2<span>+</span></div><div class="lbl">Years in Data &amp; AI</div></div>
         <div class="stat"><div class="val">5</div><div class="lbl">Microsoft &amp; Databricks certifications</div></div>
-        <div class="stat"><div class="val">3</div><div class="lbl">Enterprise solutions delivered</div></div>
+        <div class="stat"><div class="val">4</div><div class="lbl">Enterprise solutions delivered</div></div>
         <div class="stat"><div class="val">8.6</div><div class="lbl">CGPA — B.E., Anna University</div></div>
       </div>
     </div>
@@ -306,23 +334,45 @@
       <div class="sec-head">
         <div class="kicker">Projects</div>
         <h2>Selected work</h2>
-        <p>Enterprise platforms and accelerators I've engineered at iLink Digital.</p>
+        <p>Platforms, accelerators, and apps I've built on Microsoft Fabric and Databricks. Projects marked <strong>Live demo</strong> can be explored right here in your browser.</p>
       </div>
       <div class="proj-grid">
+        <article class="proj featured">
+          <div>
+            <div class="num">01 <span class="badge">New &middot; Live demo</span></div>
+            <h3>Capacity Insights — Real-Time Fabric Capacity Monitor</h3>
+            <p>A real-time monitoring app for Microsoft Fabric capacities. It streams compute-unit events into Eventhouse, scores every reading against a 4-week hour-of-week baseline to catch anomalies, estimates cost and splits it across teams, checks semantic models against best-practice rules, and docks a Fabric data agent on every screen, so operators can ask <em>why</em> something happened, not just read <em>what</em>.</p>
+            <div class="tags"><span class="tag">Microsoft Fabric</span><span class="tag">Eventhouse / KQL</span><span class="tag">DAX</span><span class="tag">Data Agent</span><span class="tag">React</span><span class="tag">TypeScript</span></div>
+            <div class="links">
+              <button type="button" class="btn-demo" data-demo="demos/capacity-insights.html" data-title="Capacity Insights — interactive demo (sample data)">&#9654; Try the live demo</button>
+              <a href="demos/capacity-insights.html" target="_blank" rel="noopener">Open full screen &#8599;</a>
+            </div>
+          </div>
+          <aside class="highlights">
+            <h4>Highlights</h4>
+            <ul>
+              <li>Live health every 30 seconds across all three Fabric throttling windows</li>
+              <li>Z-score anomaly detection: flags "unusual for a Tuesday 2pm", not just a fixed threshold</li>
+              <li>Cost &amp; chargeback by workspace and team, with budget alerts and CSV export</li>
+              <li>One React codebase shipped as both a Fabric App and an Extensibility Toolkit workload</li>
+              <li>A single-notebook installer that stands up the whole stack in any tenant</li>
+            </ul>
+          </aside>
+        </article>
         <article class="proj">
-          <div class="num">01</div>
+          <div class="num">02</div>
           <h3>iWeave — Ontology &amp; Semantic Intelligence Platform</h3>
           <p>AI-powered platform that models business domains as knowledge graphs for intelligent data discovery and contextual reasoning. I built industry-specific ontology templates using Claude and integrated the platform with Microsoft Fabric and Neo4j for seamless ontology import/export across enterprise data ecosystems.</p>
           <div class="tags"><span class="tag">Claude</span><span class="tag">Microsoft Fabric</span><span class="tag">Neo4j</span><span class="tag">Knowledge Graphs</span></div>
         </article>
         <article class="proj">
-          <div class="num">02</div>
+          <div class="num">03</div>
           <h3>GreenSky — Methane Leak Detection Accelerator</h3>
           <p>Plug-and-play Oil &amp; Gas accelerator on Microsoft Fabric and Databricks that detects methane leaks by fusing industrial SCADA data with satellite plume data from Microsoft Planetary Computer. I designed the Bronze–Silver–Gold Medallion architecture and built real-time RTI dashboards with optimized KQL.</p>
           <div class="tags"><span class="tag">Microsoft Fabric</span><span class="tag">Databricks</span><span class="tag">KQL</span><span class="tag">Medallion Architecture</span></div>
         </article>
         <article class="proj">
-          <div class="num">03</div>
+          <div class="num">04</div>
           <h3>Digital Twin &amp; Real-Time Intelligence Showcases</h3>
           <p>Presales solutions built on Microsoft Fabric — including a Digital Twin demo presented at FabCon '25 showcasing future-state architecture. I transformed Eventstream data into interactive real-time dashboards with KQL and accelerated custom dashboard delivery using Rayfin with Claude.</p>
           <div class="tags"><span class="tag">Digital Twin</span><span class="tag">Eventstream</span><span class="tag">KQL</span><span class="tag">Rayfin</span></div>
@@ -395,6 +445,19 @@
     </div>
   </div>
 
+  <!-- DEMO MODAL -->
+  <div class="demo-modal" id="demoModal" hidden role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+    <div class="cert-backdrop" id="demoBackdrop"></div>
+    <div class="demo-box">
+      <div class="demo-bar">
+        <span class="t" id="demoTitle"></span>
+        <a id="demoNewTab" href="" target="_blank" rel="noopener">Open full screen &#8599;</a>
+        <button class="demo-x" id="demoClose" aria-label="Close demo">&times;</button>
+      </div>
+      <iframe id="demoFrame" title="Interactive project demo" src="about:blank"></iframe>
+    </div>
+  </div>
+
   <script>
     // Mobile nav toggle
     var toggle = document.getElementById('navToggle');
@@ -435,6 +498,35 @@
     document.getElementById('certBackdrop').addEventListener('click', closeCert);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !certModal.hidden) closeCert();
+    });
+
+    // Project demo modal: any element with data-demo="demos/<file>.html" opens it
+    var demoModal = document.getElementById('demoModal');
+    var demoFrame = document.getElementById('demoFrame');
+    var demoTitle = document.getElementById('demoTitle');
+    var demoNewTab = document.getElementById('demoNewTab');
+
+    function openDemo(trigger) {
+      var src = trigger.getAttribute('data-demo');
+      demoTitle.textContent = trigger.getAttribute('data-title') || 'Interactive demo';
+      demoNewTab.href = src;
+      demoFrame.src = src;
+      demoModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('demoClose').focus();
+    }
+    function closeDemo() {
+      demoModal.hidden = true;
+      demoFrame.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('[data-demo]').forEach(function (trigger) {
+      trigger.addEventListener('click', function () { openDemo(trigger); });
+    });
+    document.getElementById('demoClose').addEventListener('click', closeDemo);
+    document.getElementById('demoBackdrop').addEventListener('click', closeDemo);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !demoModal.hidden) closeDemo();
     });
   </script>
 </body>

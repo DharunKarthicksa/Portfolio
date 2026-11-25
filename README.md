@@ -14,9 +14,25 @@ All content lives in `index.html`, organized by section:
 - About — bio and quick-facts card
 - Skills — tag groups for languages, data engineering, platforms, and AI
 - Certifications — Microsoft and Databricks credentials
-- Projects — iWeave, GreenSky, and Digital Twin / RTI showcases
+- Projects — Capacity Insights (with live demo), iWeave, GreenSky, and Digital Twin / RTI showcases
 - Experience — roles at iLink Digital and education
 - Contact — email, LinkedIn, and GitHub links
+
+## Adding an interactive demo to a project
+
+Interactive demos live in `demos/` and open in a full-size popup on the site.
+
+1. Save the demo as a single self-contained HTML file in `demos/`, e.g. `demos/greensky.html`.
+   It must not need a server, a sign-in, or any real customer or tenant data.
+2. In `index.html`, add these two links to that project's card, inside `<div class="links">`:
+
+   ```html
+   <button type="button" class="btn-demo" data-demo="demos/greensky.html"
+           data-title="GreenSky — interactive demo (sample data)">&#9654; Try the live demo</button>
+   <a href="demos/greensky.html" target="_blank" rel="noopener">Open full screen &#8599;</a>
+   ```
+
+Any element with a `data-demo` attribute opens the popup automatically, so you don't need to add any JavaScript.
 
 ## Running locally
 
